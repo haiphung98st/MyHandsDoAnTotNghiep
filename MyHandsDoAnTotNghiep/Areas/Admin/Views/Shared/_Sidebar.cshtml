@@ -1,0 +1,116 @@
+﻿
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="~/Admin/Home/Index">
+            <div class="sidebar-brand-icon rotate-n-15">
+            </div>
+            <div class="sidebar-brand-text mx-7">MyHands <sup>admin</sup></div>
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+            <a class="nav-link" href="~/Admin/Home/Index">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Trang chủ</span>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Quản lý
+        </div>
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseQLSP" aria-expanded="true" aria-controls="collapseQLSP">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Quản lý sản phẩm</span>
+            </a>
+            <div id="collapseQLSP" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Quản lý</h6>
+                    <a class="collapse-item" href="~/Areas/Admin/">Danh mục</a>
+                    <a class="collapse-item" href="~/Admin/SanPham/Index">Sản phẩm</a>
+                </div>
+            </div>
+        </li>
+
+        <!-- Nav Item - Utilities Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseQLBV" aria-expanded="true" aria-controls="collapseQLBV">
+                <i class="fas fa-fw fa-wrench"></i>
+                <span>Quản lý bài viết</span>
+            </a>
+            <div id="collapseQLBV" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Quản lý</h6>
+                    <a class="collapse-item" href="~/Admin/ChuDeBaiViet/Create">Chủ đề</a>
+                    <a class="collapse-item" href="~/Admin/BaiViet/Index">Bài viết</a>
+                </div>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHoaDon" aria-expanded="true" aria-controls="collapseHoaDon">
+                <i class="fas fa-fw fa-wrench"></i>
+                <span>Hóa đơn</span>
+            </a>
+            <div id="collapseHoaDon" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Quản lý</h6>
+                    <a class="collapse-item" href="utilities-color.html">Chủ đề</a>
+                    <a class="collapse-item" href="utilities-border.html">Bài viết</a>
+                </div>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThongKe" aria-expanded="true" aria-controls="collapseThongKe">
+                <i class="fas fa-fw fa-wrench"></i>
+                <span>Thống kê</span>
+            </a>
+            <div id="collapseThongKe" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Quản lý</h6>
+                    <a class="collapse-item" href="utilities-color.html">Chủ đề</a>
+                    <a class="collapse-item" href="utilities-border.html">Bài viết</a>
+                </div>
+            </div>
+        </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Tài khoản
+        </div>
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item active">
+            <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="true" aria-controls="collapseUsers">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Quản lý người dùng</span>
+            </a>
+            <div id="collapseUsers" class="collapse show" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Tài khoản</h6>
+                    <a class="collapse-item" href="~/Admin/User/Create">Thêm mới tài khoản</a>
+                    <a class="collapse-item" href="~/Admin/User/Index">Danh sách tài khoản</a>
+                </div>
+            </div>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+
+    </ul>

@@ -1,0 +1,236 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MyHands Store</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Colo Shop Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/Assets/Client/styles/bootstrap4/bootstrap.min.css">
+    <link href="/Assets/Client/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="/Assets/Client/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="/Assets/Client/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+    <link rel="stylesheet" href="/Assets/Client/plugins/themify-icons/themify-icons.css">
+    <link rel="stylesheet" type="text/css" href="/Assets/Client/plugins/OwlCarousel2-2.2.1/animate.css">
+    <link rel="stylesheet" type="text/css" href="/Assets/Client/styles/main_styles.css">
+    <link rel="stylesheet" type="text/css" href="/Assets/Client/styles/responsive.css">
+    <link rel="stylesheet" type="text/css" href="/Assets/Client/plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="/Assets/Client/styles/single_styles.css">
+    <link rel="stylesheet" type="text/css" href="/Assets/Client/styles/single_responsive.css">
+    <link href="/Assets/Admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="~/Assets/Admin/css/sb-admin-2.min.css" rel="stylesheet">
+    <script>
+        function closeClick() {
+            var x = document.getElementById("searchBar");
+                x.style.display = "none";
+        }
+        function searchClick() {
+            var x = document.getElementById("searchBar");
+            x.style = "position:fixed;width:74rem;left:6rem;top:3.7rem;z-index:1;";
+        }
+    </script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <!-- Load Facebook SDK for JavaScript -->
+    <div id="fb-root"></div>
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                xfbml: true,
+                version: 'v8.0'
+            });
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+
+    <!-- Your Chat Plugin code -->
+    <div class="fb-customerchat"
+         attribution=setup_tool
+         page_id="107601271144562"
+         logged_in_greeting="Chào mừng đến với MyHands Store"
+         logged_out_greeting="Chào mừng đến với MyHands Store">
+    </div>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v8.0&appId=637142617211451&autoLogAppEvents=1" nonce="ybAyqNIB"></script>
+    <div class="super_container">
+
+        <!-- Header -->
+
+        <header class="header trans_300">
+
+            <!-- Top Navigation -->
+
+            <div class="top_nav">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="top_nav_left">free shipping on all vn orders over $50</div>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <div class="top_nav_right">
+                                <ul class="top_nav_menu">
+                                    <li class="language">
+                                        <a href="#">
+                                            VN
+                                            <i class="fa fa-angle-down"></i>
+                                        </a>
+                                        <ul class="language_selection">
+                                            <li><a href="#">ENG</a></li>
+                                        </ul>
+                                    </li>
+                                    @{
+                                        var session = Session[MyHandsDoAnTotNghiep.Common.CommonConstants.USER_SESSION];
+
+                                        if (session == null)
+                                        {
+                                            <li class="account">
+                                                <a href="#">
+                                                    Tài khoản &nbsp
+                                                    <i class="fa fa-angle-down"></i>
+                                                </a>
+                                                <ul class="account_selection">
+                                                    <li><a href="/User/Login"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+                                                    <li><a href="/User/Register"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+                                                </ul>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="account">
+                                                <a href="#">
+                                                    Chào @HttpContext.Current.Session["USER_SESSION"].ToString()
+                                                    <i class="fa fa-angle-down"></i>
+                                                </a>
+                                                <ul class="account_selection">
+                                                    <li>@Html.ActionLink("Đăng xuất", "Logout", "User")</li>
+                                                </ul>
+                                            </li>
+                                        }
+                                    }
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Navigation -->
+
+            <div class="main_nav_container">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 text-right">
+                            <div class="logo_container">
+                                <a href="/">My<span>Hands</span></a>
+                            </div>
+                            <nav class="navbar">
+                                @{Html.RenderAction("NavBarMenu", "Home");}
+                                <form action="tim-kiem" method="get">
+                                    <div id="searchBar" class="input-group" style="position:fixed;width:74rem;left:6rem;top:3.7rem;z-index:1;display:none">
+                                        <input type="text" name="keyword" id="txtSearch" style="height:70px;padding-left:30px" class="form-control bg-light border-0 small" aria-label="Search" placeholder="Tìm kiếm" aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button" onclick="closeClick()">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="menu-user">
+                                    <ul class="navbar_user">
+                                        <li>
+                                            <button style="background:transparent;border:none"><i class="fa fa-search" aria-hidden="true" onclick="searchClick()"></i></button>
+                                        </li>
+                                        @{
+
+                                            if (session == null)
+                                            {
+                                                <li><a href="/User/Login"><i class="fa fa-user" aria-hidden="true"></i></a></li>
+                                            }
+                                            else
+                                            {
+                                                <li><a href="/"><i class="fa fa-user" aria-hidden="true"></i></a></li>
+                                            }
+                                        }
+                                        <li class="checkout">
+                                            @{ Html.RenderAction("CartMain", "Home");}
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="hamburger_container">
+                                    <i class="fa fa-bars" aria-hidden="true"></i>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </header>
+
+        <div class="fs_menu_overlay"></div>
+
+        <!--main-->
+
+        @RenderBody()
+        <!--mainend-->
+        <!-- Newsletter -->
+
+        <div class="newsletter">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="newsletter_text d-flex flex-column justify-content-center align-items-lg-start align-items-md-center text-center">
+                            <h4>Newsletter</h4>
+                            <p>Subscribe to our newsletter and get 20% off your first purchase</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <form action="post">
+                            <div class="newsletter_form d-flex flex-md-row flex-column flex-xs-column align-items-center justify-content-lg-end justify-content-center">
+                                <input id="newsletter_email" type="email" placeholder="Your email" required="required" data-error="Valid email is required.">
+                                <button id="newsletter_submit" type="submit" class="newsletter_submit_btn trans_300" value="Submit">subscribe</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+
+        <footer class="footer">
+            @{Html.RenderAction("Footer", "Home");
+            }
+
+        </footer>
+
+    </div>
+
+    <script src="/Assets/Client/js/jquery-3.2.1.min.js"></script>
+    <script src="/Assets/Client/styles/bootstrap4/popper.js"></script>
+    <script src="/Assets/Client/styles/bootstrap4/bootstrap.min.js"></script>
+    <script src="/Assets/Client/plugins/Isotope/isotope.pkgd.min.js"></script>
+    <script src="/Assets/Client/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+    <script src="/Assets/Client/plugins/easing/easing.js"></script>
+    <script src="/Assets/Client/plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+    <script src="/Assets/Client/js/single_custom.js"></script>
+    <script src="/Assets/Client/js/custom.js"></script>
+    <script src="/Assets/Client/js/controller/layoutJS.js"></script>
+    @RenderSection("jsFooter", required: false)
+</body>
+
+</html>

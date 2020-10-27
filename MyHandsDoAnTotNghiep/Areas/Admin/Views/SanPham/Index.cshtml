@@ -1,0 +1,82 @@
+﻿@model PagedList.IPagedList<Model.EF.tbl_SanPham>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Quản lý sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layouts.cshtml";
+}
+
+@section header{
+    Danh sách sản phẩm
+}
+@section scripts {
+    <script src="~/Assets/Admin/js/controller/sanPhamControllerJS.js"></script>
+}
+@using (Html.BeginForm("Index", "SanPham", FormMethod.Get))
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <table>
+                <tr>
+                    <td><input type="text" class="form-control bg-light  small" name="SearchSanPham" value="@ViewBag.SearchSanPham" /></td>
+                    <td><button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button></td>
+                    <td><a href="~/Admin/SanPham/Create" class="btn btn-primary">Thêm mới</a></td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+    <br />
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tên sản phẩm</th>
+                    <th scope="col">Hình ảnh</th>
+                    <th scope="col">Giá bán</th>
+                    <th scope="col">Giá khuyến mãi</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Thao tác</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr id="row_@item.ID">
+                    <td>
+                    </td>
+                    <td>@item.sTenSanPham</td>
+                    <td><img src="@item.sImages" style="width:150px" /> </td>
+                    <td>@item.dGiaBan</td>
+                    <td>@item.dGiaKhuyenMai</td>
+
+                    <td>@item.bStatus</td>
+                    <td><a href="#" class="btnActive" data-id="@item.ID">@(item.bStatus?"Kích hoạt":"Khóa")</a></td>
+                    <td>
+                        <a href="/Admin/SanPham/Edit/@item.ID">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        &nbsp &nbsp &nbsp
+
+                        @Ajax.ActionLink(" ", "Delete", new { id = item.ID }, new AjaxOptions
+                   {
+                       Confirm = "Bạn muốn xóa ?",
+                       OnComplete = "$('#row_" + @item.ID + "').remove()",
+                       HttpMethod = "Delete"
+                   }, new { @class = "fas fa-trash-alt" })
+
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @searchUser = @ViewBag.SearchUserString }))
+
+
+    </div>
+</div>

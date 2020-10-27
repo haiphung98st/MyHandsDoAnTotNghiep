@@ -1,0 +1,79 @@
+﻿@model PagedList.IPagedList<Model.EF.tbl_BaiViet>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Quan ly bai viet";
+    Layout = "~/Areas/Admin/Views/Shared/_Layouts.cshtml";
+}
+
+@section header{
+    Danh sách bài viết
+}
+@section scripts {
+    <script src="~/Assets/Admin/js/controller/baiVietControllerJS.js"></script>
+}
+@using (Html.BeginForm("Index", "BaiViet", FormMethod.Get))
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <table>
+                <tr>
+                    <td><input type="text" class="form-control bg-light  small" name="SearchBaiViet" value="@ViewBag.SearchBaiViet" /></td>
+                    <td><button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button></td>
+                    <td><a href="~/Admin/BaiViet/Create" class="btn btn-primary">Thêm mới</a></td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+    <br />
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tiêu đề</th>
+                    <th scope="col">Hình ảnh</th>
+                    <th scope="col">Ngày đăng</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Thao tác</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr id="row_@item.IDBaiViet">
+                        <td>
+                        </td>
+                        <td>@item.sTieuDe</td>
+                        <td><img src="@item.sImages" style="width:150px" /> </td>
+                        <td>@item.dNgayTao</td>
+                        <td>@item.bStatus</td>
+                        <td><a href="#" class="btnActive" data-id="@item.IDBaiViet">@(item.bStatus?"Kích hoạt":"Khóa")</a></td>
+                        <td>
+                            <a href="/Admin/BaiViet/Edit/@item.IDBaiViet">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            &nbsp &nbsp &nbsp
+
+                            @Ajax.ActionLink(" ", "Delete", new { id = item.IDBaiViet }, new AjaxOptions
+                       {
+                           Confirm = "Bạn muốn xóa ?",
+                           OnComplete = "$('#row_" + @item.IDBaiViet + "').remove()",
+                           HttpMethod = "Delete"
+                       }, new { @class = "fas fa-trash-alt" })
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @searchUser = @ViewBag.SearchUserString }))
+
+
+    </div>
+</div>

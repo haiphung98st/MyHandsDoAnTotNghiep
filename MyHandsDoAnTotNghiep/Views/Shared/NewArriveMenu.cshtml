@@ -1,0 +1,10 @@
+﻿@model List<Model.EF.tbl_DanhMucSanPham>
+
+<div class="new_arrivals_sorting">
+    <ul >
+        @foreach (var item in Model)
+        {
+            <li class="grid_sorting_button button d-flex  justify-content-center align-items-center"><a href="">@item.sTenDanhMuc</a></li>
+        }
+    </ul>
+</div>

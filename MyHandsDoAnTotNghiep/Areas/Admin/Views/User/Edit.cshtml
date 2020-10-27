@@ -1,0 +1,77 @@
+﻿@model Model.EF.tbl_TaiKhoan
+
+@{
+    ViewBag.Title = "Thay doi thong tin tai khoan";
+    Layout = "~/Areas/Admin/Views/Shared/_Layouts.cshtml";
+}
+
+@section header{
+    Cập nhật thông tin tài khoản
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+
+                        @using (Html.BeginForm("Edit", "User", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.sMatKhau, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-10">
+                                    @Html.PasswordFor(model => model.sMatKhau, new { @class = "form-control form-control-user" })
+                                    @Html.ValidationMessageFor(model => model.sMatKhau, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.sHoTen, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(model => model.sHoTen, new { @class = "form-control form-control-user" })
+                                    @Html.ValidationMessageFor(model => model.sHoTen, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.sDiaChi, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(model => model.sDiaChi, new { @class = "form-control form-control-user" })
+                                    @Html.ValidationMessageFor(model => model.sDiaChi, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.sEmail, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(model => model.sEmail, new { @class = "form-control form-control-user" })
+                                    @Html.ValidationMessageFor(model => model.sEmail, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.sSDT, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(model => model.sSDT, new { @class = "form-control form-control-user" })
+                                    @Html.ValidationMessageFor(model => model.sSDT, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.bStatus, htmlAttributes: new { @class = "control-label col-md-3" })
+                                @Html.CheckBoxFor(model => model.bStatus, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.bStatus, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Cập nhật" class="btn btn-primary btn-user btn-block" />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

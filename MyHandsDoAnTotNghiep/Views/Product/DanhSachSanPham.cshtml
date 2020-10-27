@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "DanhSachSanPham";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var listNewArrivals = (List<Model.EF.tbl_SanPham>)ViewBag.newarrivals;
+}
+<div class="new_arrivals">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+
+                <div class=" new_arrivals_title">
+                    <h2>Danh sách sản phẩm</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
+
+                    <!-- Product 1 -->
+                    @foreach (var item in listNewArrivals)
+                    {
+                        var url = "/chi-tiet/" + item.sTenSanPhamMeta + "-" + item.ID;
+                        <div class="product-item men">
+                            <div class="product discount product_filter">
+                                <div class="product_image">
+                                    <img src="@item.sImages" alt="@item.sTenSanPham" />
+                                </div>
+                                <div class="favorite favorite_left"></div>
+                                <div class="product_bubble product_bubble_left product_bubble_green d-flex flex-column align-items-center"><span>new</span></div>
+                                <div class="product_info">
+                                    <h6 class="product_name"><a href="@url">@item.sTenSanPham</a></h6>
+                                    <div class="product_price">@(item.dGiaKhuyenMai.HasValue?item.dGiaKhuyenMai.Value.ToString("N0"):"Liên hệ")<span>@(item.dGiaBan.HasValue?item.dGiaBan.Value.ToString("N0"):" ")</span></div>
+                                </div>
+                            </div>
+                            <div class="red_button add_to_cart_button"><a href="/them-vao-gio?IDSanPham=@item.ID&SoLuong=1">Thêm vào giỏ hàng</a></div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
