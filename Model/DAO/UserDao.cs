@@ -162,6 +162,21 @@ namespace Model.DAO
                 
             }
         }
+
+        public int ChangePassword(String username,String oldpass)
+        {
+
+           var result = db.tbl_TaiKhoan.SingleOrDefault(x => x.sTenTaiKhoan == username);
+           if (result.sMatKhau == oldpass)
+           {
+            return 1;//đổi mk thành công
+           }
+           else
+           {
+            return 0; //k ko đúng
+           }
+                   
+        }
         public bool Delete(int id)
         {
             try{

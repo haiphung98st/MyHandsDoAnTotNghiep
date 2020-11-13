@@ -1,0 +1,114 @@
+﻿@model Model.EF.tbl_TaiKhoan 
+@{
+    ViewBag.Title = "HoSoIndex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var session = (UserLogin)Session[MyHandsDoAnTotNghiep.Common.CommonConstants.USER_SESSION];
+
+}
+
+    <div id="wrapper">
+        @RenderPage("NavbarPersonal.cshtml")
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content" style="margin-top:180px">
+                <div class="container-fluid">
+                    @if (TempData["AlertMessage"] != null)
+                    {
+                        <div id="AlertBox" class="alert @TempData["AlertType"] hide">@TempData["AlertMessage"]</div>
+                    }
+                    @if (session != null)
+                    {
+                        using (Html.BeginForm("HoSoIndex", "Personal", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <h3>Thông tin tài khoản</h3>
+                    <hr />
+                    @if (ViewBag.Success != null)
+                    {
+                        <div class="alert alert-success">@ViewBag.Success</div>
+                    }
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            Tên tài khoản: @session.UserName
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            Họ và tên:
+                            <input type="text" class="form-control" name="sHoTen" id="sHoTen" value="@session.HoTen" required>
+                            <div class="invalid-feedback" style="width: 100%;">
+                                Hãy nhập họ tên
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            Địa chỉ Email:
+                            <input type="text" class="form-control" name="sEmail" id="sEmail" value="@session.Email" required>
+                            <div class="invalid-feedback" style="width: 100%;">
+                                Hãy nhập Địa chỉ Email
+                            </div>
+                        </div>
+                    </div>
+
+                    @*<div class="form-group">
+                        <div class="col-md-10">
+                            Tỉnh/thành:
+                            @Html.DropDownList("iTinhThanhID", new SelectList(new string[] { }), new { @class = "form-control", @id = "ddlTinhThanh" })
+                            @Html.ValidationMessageFor(model => model.iTinhThanhID, "", new { @class = "text-danger" })
+                            <input type="hidden" id="hdnTenTinhThanh" name="hdnTenTinhThanh" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            Quận/huyện:
+                            
+                            @Html.DropDownList("iQuanHuyenID", new SelectList(new string[] { }), new { @class = "form-control", @id = "ddlQuanHuyen" })
+                            @Html.ValidationMessageFor(model => model.iTinhThanhID, "", new { @class = "text-danger" })
+                            <input type="hidden" id="hdnTenQuanHuyen" name="hdnTenQuanHuyen" />
+                        </div>
+                    </div>*@
+
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            Địa chỉ:
+                            <input type="text" class="form-control" name="sDiaChi" id="sDiaChi" value="@session.DiaChi" required>
+                            <div class="invalid-feedback" style="width: 100%;">
+                                Hãy nhập Địa chỉ
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            Số điện thoại
+                            <input type="text" class="form-control" name="sSoDienThoai" id="sSoDienThoai" value="@session.SDT" required>
+                            <div class="invalid-feedback" style="width: 100%;">
+                                Hãy nhập số điện thoại
+                            </div>
+                        </div>
+                    </div>
+
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Cập nhật thông tin" class="btn btn-primary btn-user btn-block" />
+                        </div>
+                    </div>
+                </div>
+                        }
+                    }
+                    else
+                    {
+                        <p>hãy đăng nhập</p>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+

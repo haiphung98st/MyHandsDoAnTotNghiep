@@ -38,6 +38,8 @@
                     <th scope="col">Tên</th>
                     <th scope="col">Email</th>
                     <th scope="col">SĐT</th>
+                    <th scope="col">Loại tài khoản</th>
+
                     <th scope="col">Trạng thái</th>
                     <th scope="col">Thao tác</th>
 
@@ -54,6 +56,7 @@
                         <td>@item.sHoTen</td>
                         <td>@item.sEmail</td>
                         <td>@item.sSDT</td>
+                        <td>@item.sQuyen</td>
                         <td><a href="#" class="btnActive" data-id="@item.ID">@(item.bStatus?"Kích hoạt":"Khóa")</a></td>
                         <td>
                             <a href="/Admin/User/Edit/@item.ID">

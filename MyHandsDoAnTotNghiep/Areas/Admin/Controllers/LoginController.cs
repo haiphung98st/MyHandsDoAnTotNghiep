@@ -32,7 +32,7 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
                     userSession.GroupID = user.sQuyen;
                     var listPerrmission = dao.GetListCredential(loginModel.username);
                     Session.Add(CommonConstants.SESSION_PERMISSION, listPerrmission);
-
+                    
                     Session.Add(CommonConstants.USER_SESSION,userSession );
                     return RedirectToAction("Index", "Home");
                 }
@@ -63,6 +63,12 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
             }
             return View("Index");
             
+        }
+
+        public ActionResult Logout()
+        {
+            Session[CommonConstants.USER_SESSION] = null;
+            return Redirect("/Admin/Login");
         }
     }
 }

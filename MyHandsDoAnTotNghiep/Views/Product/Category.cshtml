@@ -5,99 +5,92 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div style="height:200px">
-
 </div>
-<div class="container product_section_container">
-    <div class="row">
-        <div class="col product_section clearfix">
-
-            <div class="sidebar">
-                <div class="sidebar_section">
-                    <div class="sidebar_title">
-                        <h2>@category.sTenDanhMuc</h2>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-
 <div class="new_arrivals">
     <div class="container">
+        <div class="sidebar_title">
+            <h2>@category.sTenDanhMuc</h2>
+        </div>
         <div class="row">
             <div class="col">
                 <div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
                     @foreach (var item in Model)
                     {
                         var url = "/chi-tiet/" + item.sTenSanPhamMeta + "-" + item.ID;
-                        <div class="product-item men">
-                            <div class="product discount product_filter">
-                                <div class="product_image">
-                                    <img src="@item.sImages" alt="@item.sTenSanPham" />
-                                </div>
-                                <div class="favorite favorite_left"></div>
-                                <div class="product_info">
-                                    <h6 class="product_name"><a href="@url">@item.sTenSanPham</a></h6>
-                                    <span >@item.sTenDanhMuc</span><br />
-                                    <div class="product_price">@(item.dGiaKhuyenMai.HasValue?item.dGiaKhuyenMai.Value.ToString("N0"):"Liên hệ")<span>@(item.dGiaBan.HasValue?item.dGiaBan.Value.ToString("N0"):" ")</span></div>
-                                </div>
+                    <div class="product-item men">
+                        <div class="product discount product_filter">
+                            <div class="product_image">
+                                <img src="@item.sImages" alt="@item.sTenSanPham" />
                             </div>
-                            <div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>
+                            <div class="favorite favorite_left"></div>
+                            <div class="product_info">
+                                <h6 class="product_name"><a href="@url">@item.sTenSanPham</a></h6>
+                                <span>@item.sTenDanhMuc</span><br />
+                                @if (item.iSoluong > 0)
+                                {
+                                    <div class="product_price">@(item.dGiaKhuyenMai.HasValue?item.dGiaKhuyenMai.Value.ToString("N0"): item.dGiaBan.Value.ToString("N0"))<span>@(item.dGiaKhuyenMai.HasValue?item.dGiaBan.Value.ToString("N0"):" ")</span></div>
+                                }
+                                else
+                                {
+                                    <div class="product_price">Hết hàng</div>
+                                }
+                            </div>
                         </div>
+                        @if (item.iSoluong > 0)
+                        {
+                            <div class="red_button add_to_cart_button"><a href="/them-vao-gio?IDSanPham=@item.ID&SoLuong=1">Thêm vào giỏ hàng</a></div>
+                        }
+                    </div>
                     }
 
                 </div>
             </div>
         </div>
-        <br/>
-            @*phan trang*@
-            @if (ViewBag.TotalPage > 1)
-            {
-                var pageDisplay = (int)ViewBag.MaxPage;
-                int totalPage = (int)ViewBag.TotalPage;
-                int currentPage = ((int)ViewBag.Page);
+        <br />
+        @*phan trang*@
+        @if (ViewBag.TotalPage > 1)
+        {
+            var pageDisplay = (int)ViewBag.MaxPage;
+            int totalPage = (int)ViewBag.TotalPage;
+            int currentPage = ((int)ViewBag.Page);
 
-                // Create numeric links
-                var startPageIndex = Math.Max(1, currentPage - pageDisplay / 2);
-                var endPageIndex = Math.Min(totalPage, currentPage + pageDisplay / 2);
+            // Create numeric links
+            var startPageIndex = Math.Max(1, currentPage - pageDisplay / 2);
+            var endPageIndex = Math.Min(totalPage, currentPage + pageDisplay / 2);
 
-                var link = "/san-pham/" + category.sTenDanhMucMeta + "-" + category.IDDanhMuc;
-                <nav>
-                    <ul class="pagination">
-                        @if (currentPage > ViewBag.First)
+            var link = "/san-pham/" + category.sTenDanhMucMeta + "-" + category.IDDanhMuc;
+            <nav>
+                <ul class="pagination">
+                    @if (currentPage > ViewBag.First)
+                    {
+                        <li class="page-item"><a href="@link?page=@ViewBag.First" title="Trang đầu" class="first page-link"><i class="fa fa-angle-double-left"></i></a></li>
+                        <li class="page-item">
+                            <a href="@link?page=@ViewBag.Prev" title="Trang trước" class="prev page-link"><i class="fa fa-angle-left"></i></a>
+                        </li>
+
+                    }
+                    @for (int i = startPageIndex; i <= endPageIndex; i++)
+                    {
+                        if (currentPage == i)
                         {
-                            <li class="page-item"><a href="@link?page=@ViewBag.First" title="Trang đầu" class="first page-link"><i class="fa fa-angle-double-left"></i></a></li>
-                            <li class="page-item">
-                                <a href="@link?page=@ViewBag.Prev" title="Trang trước" class="prev page-link"><i class="fa fa-angle-left"></i></a>
-                            </li>
 
+                            <li class="page-item"> <a href="@link?page=@i" class="active page-link" title="Trang @i">@i</a></li>
                         }
-                        @for (int i = startPageIndex; i <= endPageIndex; i++)
+                        else
                         {
-                            if (currentPage == i)
-                            {
-
-                                <li class="page-item"> <a href="@link?page=@i" class="active page-link" title="Trang @i">@i</a></li>
-                            }
-                            else
-                            {
-                                <li class="page-item"><a href="@link?page=@i" title="Trang @i" class="pos page-link">@i</a></li>
-                            }
+                            <li class="page-item"><a href="@link?page=@i" title="Trang @i" class="pos page-link">@i</a></li>
                         }
-                        @if (currentPage < totalPage)
-                        {
-                            <li class="page-item"><a href="@link?page=@ViewBag.Next" class="next page-link" title="Trang sau"><i class="fa fa-angle-right"></i></a></li>
-                            <li class="page-item"> <a href="@link?page=@ViewBag.Last" class="last page-link" title="Trang cuối"><i class="fa fa-angle-double-right"></i></a></li>
-                        }
+                    }
+                    @if (currentPage < totalPage)
+                    {
+                        <li class="page-item"><a href="@link?page=@ViewBag.Next" class="next page-link" title="Trang sau"><i class="fa fa-angle-right"></i></a></li>
+                        <li class="page-item"> <a href="@link?page=@ViewBag.Last" class="last page-link" title="Trang cuối"><i class="fa fa-angle-double-right"></i></a></li>
+                    }
 
-                    </ul>
-                </nav>
+                </ul>
+            </nav>
 
-            }
-            else
-            {
-                <span>Không có bản ghi nào</span>
-            }
+        }
+
     </div>
 </div>

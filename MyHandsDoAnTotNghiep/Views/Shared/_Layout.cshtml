@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>MyHands Store</title>
+    <title>@ViewBag.Title</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Colo Shop Template">
@@ -15,9 +15,11 @@
     <link rel="stylesheet" type="text/css" href="/Assets/Client/styles/main_styles.css">
     <link rel="stylesheet" type="text/css" href="/Assets/Client/styles/responsive.css">
     <link rel="stylesheet" type="text/css" href="/Assets/Client/plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
+
     <link rel="stylesheet" type="text/css" href="/Assets/Client/styles/single_styles.css">
     <link rel="stylesheet" type="text/css" href="/Assets/Client/styles/single_responsive.css">
     <link href="/Assets/Admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="/Assets/Admin/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
@@ -25,29 +27,29 @@
     <script>
         function closeClick() {
             var x = document.getElementById("searchBar");
-                x.style.display = "none";
+            x.style.display = "none";
         }
         function searchClick() {
             var x = document.getElementById("searchBar");
             x.style = "position:fixed;width:74rem;left:6rem;top:3.7rem;z-index:1;";
         }
     </script>
-    <style>
 
-    </style>
 </head>
 
 <body>
     <!-- Load Facebook SDK for JavaScript -->
     <div id="fb-root"></div>
     <script>
+
         window.fbAsyncInit = function () {
             FB.init({
+                appId: '637142617211451',
                 xfbml: true,
                 version: 'v8.0'
             });
+            FB.AppEvents.logPageView();
         };
-
         (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) return;
@@ -78,6 +80,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="top_nav_left">free shipping on all vn orders over $50</div>
+
                         </div>
                         <div class="col-md-6 text-right">
                             <div class="top_nav_right">
@@ -92,7 +95,8 @@
                                         </ul>
                                     </li>
                                     @{
-                                        var session = Session[MyHandsDoAnTotNghiep.Common.CommonConstants.USER_SESSION];
+
+                                        var session = (UserLogin)Session[MyHandsDoAnTotNghiep.Common.CommonConstants.USER_SESSION];
 
                                         if (session == null)
                                         {
@@ -111,11 +115,17 @@
                                         {
                                             <li class="account">
                                                 <a href="#">
-                                                    Chào @HttpContext.Current.Session["USER_SESSION"].ToString()
+                                                    Chào @session.UserName
                                                     <i class="fa fa-angle-down"></i>
                                                 </a>
                                                 <ul class="account_selection">
-                                                    <li>@Html.ActionLink("Đăng xuất", "Logout", "User")</li>
+
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                                            Đăng xuất
+                                                        </a>
+                                                    </li>
                                                 </ul>
                                             </li>
                                         }
@@ -162,7 +172,7 @@
                                             }
                                             else
                                             {
-                                                <li><a href="/"><i class="fa fa-user" aria-hidden="true"></i></a></li>
+                                                <li><a href="/Personal/Index"><i class="fa fa-user" aria-hidden="true"></i></a></li>
                                             }
                                         }
                                         <li class="checkout">
@@ -195,41 +205,201 @@
                     <div class="col-lg-6">
                         <div class="newsletter_text d-flex flex-column justify-content-center align-items-lg-start align-items-md-center text-center">
                             <h4>Newsletter</h4>
-                            <p>Subscribe to our newsletter and get 20% off your first purchase</p>
+                            <p>Đăng ký để nhận thông tin mới nhất</p>
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <form action="post">
+                        <form>
                             <div class="newsletter_form d-flex flex-md-row flex-column flex-xs-column align-items-center justify-content-lg-end justify-content-center">
                                 <input id="newsletter_email" type="email" placeholder="Your email" required="required" data-error="Valid email is required.">
-                                <button id="newsletter_submit" type="submit" class="newsletter_submit_btn trans_300" value="Submit">subscribe</button>
+                                <button id="newsletter_submit" type="submit" class="newsletter_submit_btn trans_300">subscribe</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Đăng xuất?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Bấm vào nút đăng xuất để xác nhận</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+                        <div class="btn btn-outline-info">@Html.ActionLink("Đăng xuất", "Logout", "User")</div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Footer -->
 
         <footer class="footer">
             @{Html.RenderAction("Footer", "Home");
             }
-
+            
         </footer>
 
     </div>
 
     <script src="/Assets/Client/js/jquery-3.2.1.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script src="/Assets/Client/plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+
+    <script src="~/Assets/Admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="/Assets/Client/styles/bootstrap4/popper.js"></script>
     <script src="/Assets/Client/styles/bootstrap4/bootstrap.min.js"></script>
     <script src="/Assets/Client/plugins/Isotope/isotope.pkgd.min.js"></script>
     <script src="/Assets/Client/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
     <script src="/Assets/Client/plugins/easing/easing.js"></script>
-    <script src="/Assets/Client/plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
     <script src="/Assets/Client/js/single_custom.js"></script>
     <script src="/Assets/Client/js/custom.js"></script>
+    <script src="~/Assets/Admin/js/plugins/ckfinder/ckfinder.js"></script>
+    <script src="~/Assets/Admin/js/plugins/ckeditor/ckeditor.js"></script>
+    <script src="~/Assets/Admin/js/sb-admin-2.min.js"></script>
+    <script src="~/Assets/Admin/js/sb-admin-2.js"></script>
     <script src="/Assets/Client/js/controller/layoutJS.js"></script>
+
+    <style type="text/css">
+        /*Added css for design notification area, you can design by your self*/
+        /* COPY css content from youtube video description*/
+        .noti-content {
+            position: fixed;
+            right: 100px;
+            background: #e5e5e5;
+            border-radius: 4px;
+            top: 47px;
+            width: 250px;
+            display: none;
+            border: 1px solid #9E988B;
+        }
+
+        ul#notiContent {
+            max-height: 200px;
+            overflow: auto;
+            padding: 0px;
+            margin: 0px;
+            padding-left: 20px;
+        }
+
+            ul#notiContent li {
+                margin: 3px;
+                padding: 6px;
+                background: #fff;
+            }
+
+        .noti-top-arrow {
+            border-color: transparent;
+            border-bottom-color: #F5DEB3;
+            border-style: dashed dashed solid;
+            border-width: 0 8.5px 8.5px;
+            position: absolute;
+            right: 32px;
+            top: -8px;
+        }
+
+        span.noti {
+            color: #FF2323;
+            margin: 15px;
+            position: fixed;
+            right: 100px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        span.count {
+            position: relative;
+            top: -3px;
+        }
+    </style>
+    <script>
+        $('#newsletter_submit').off('click').on('click', function (e) {
+            e.preventDefault();
+            var email = $('#newsletter_email').val();
+            $.ajax({
+                url: "/Home/Subcribe",
+                data: { email: email },
+                dataType: "json",
+                type: "POST",
+                success: function (res) {
+                    if (res.status == true) {
+                        window.alert('Gửi thành công');
+                        $('#newsletter_email').val('');
+                    }
+                }
+            });
+
+        });
+    
+    </script>
+    @* Add jquery code for Get Notification & setup signalr *@
+    <script type="text/javascript">
+        $(function () {
+            // Click on notification icon for show notification
+            $('span.noti').click(function (e) {
+                e.stopPropagation();
+                $('.noti-content').show();
+                var count = 0;
+                count = parseInt($('span.count').html()) || 0;
+                //only load notification if not already loaded
+                if (count > 0) {
+                    updateNotification();
+                }
+                $('span.count', this).html('&nbsp;');
+            })
+            // hide notifications
+            $('html').click(function () {
+                $('.noti-content').hide();
+            })
+            // update notification
+            function updateNotification() {
+                $('#notiContent').empty();
+                $('#notiContent').append($('<li>Loading...</li>'));
+                $.ajax({
+                    type: 'GET',
+                    url: '/Home/GetNotificationContacts',
+                    success: function (response) {
+                        $('#notiContent').empty();
+                        if (response.length == 0) {
+                            $('#notiContent').append($('<li>No data available</li>'));
+                        }
+                        $.each(response, function (index, value) {
+                            $('#notiContent').append($('<li>New contact : ' + value.ContactName + ' (' + value.ContactNo + ') added</li>'));
+                        });
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            }
+            // update notification count
+            function updateNotificationCount() {
+                var count = 0;
+                count = parseInt($('span.count').html()) || 0;
+                count++;
+                $('span.count').html(count);
+            }
+            // signalr js code for start hub and send receive notification
+            var myHub = $.connection.myHub;
+            $.connection.hub.start().done(function () {
+                console.log('Notification hub started');
+            });
+            //signalr method for push server message to client
+            myHub.client.notify = function (message) {
+                if (message && message.toLowerCase() == "added") {
+                    updateNotificationCount();
+                }
+            }
+        })
+    </script>
+
+
     @RenderSection("jsFooter", required: false)
 </body>
 

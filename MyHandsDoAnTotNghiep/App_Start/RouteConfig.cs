@@ -32,11 +32,22 @@ namespace MyHandsDoAnTotNghiep
                url: "san-pham",
                defaults: new { controller = "Product", action = "Index", id = UrlParameter.Optional },
                namespaces: new[] { "MyHandsDoAnTotNghiep.Controllers" }
+           );  routes.MapRoute(
+               name: "chi tiet hoa don",
+               url: "chi-tiet-hoa-don",
+               defaults: new { controller = "Admin/HoaDon", action = "OrderDetials", id = UrlParameter.Optional },
+               namespaces: new[] { "MyHandsDoAnTotNghiep.Controllers" }
            );
             routes.MapRoute(
                name: "dang ky",
                url: "dang-ky",
                defaults: new { controller = "User", action = "Register", id = UrlParameter.Optional },
+               namespaces: new[] { "MyHandsDoAnTotNghiep.Controllers" }
+           );
+            routes.MapRoute(
+               name: "trang ca nhan",
+               url: "trang-ca-nhan",
+               defaults: new { controller = "Personal", action = "Index", id = UrlParameter.Optional },
                namespaces: new[] { "MyHandsDoAnTotNghiep.Controllers" }
            );
             routes.MapRoute(
@@ -85,6 +96,18 @@ namespace MyHandsDoAnTotNghiep
                name: "them vao gio",
                url: "them-vao-gio",
                defaults: new { controller = "GioHangItem", action = "AddToCart", id = UrlParameter.Optional },
+               namespaces: new[] { "MyHandsDoAnTotNghiep.Controllers" }
+           );
+            routes.MapRoute(
+               name: "them phieu yeu cau CREATE",
+               url: "them-phieu",
+               defaults: new { controller = "PhieuYeuCauNhap", action = "Create", id = UrlParameter.Optional },
+               namespaces: new[] { "MyHandsDoAnTotNghiep.Controllers" }
+           );
+            routes.MapRoute(
+               name: "them san pham",
+               url: "them-phieu-yc",
+               defaults: new { controller = "PhieuYeuCauNhap", action = "AddSP", id = UrlParameter.Optional },
                namespaces: new[] { "MyHandsDoAnTotNghiep.Controllers" }
            );
             routes.MapRoute(

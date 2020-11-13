@@ -36,7 +36,7 @@
             <div id="collapseQLSP" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Quản lý</h6>
-                    <a class="collapse-item" href="~/Areas/Admin/">Danh mục</a>
+                    <a class="collapse-item" href="~/Admin/DanhMucSanPham/Index">Danh mục</a>
                     <a class="collapse-item" href="~/Admin/SanPham/Index">Sản phẩm</a>
                 </div>
             </div>
@@ -51,23 +51,34 @@
             <div id="collapseQLBV" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Quản lý</h6>
-                    <a class="collapse-item" href="~/Admin/ChuDeBaiViet/Create">Chủ đề</a>
+                    <a class="collapse-item" href="~/Admin/ChuDeBaiViet/Index">Chủ đề</a>
                     <a class="collapse-item" href="~/Admin/BaiViet/Index">Bài viết</a>
                 </div>
             </div>
         </li>
+
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHoaDon" aria-expanded="true" aria-controls="collapseHoaDon">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseQLnhap" aria-expanded="true" aria-controls="collapseQLnhap">
+                <i class="fas fa-fw fa-wrench"></i>
+                <span>Quản lý nhập hàng</span>
+            </a>
+            <div id="collapseQLnhap" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Quản lý</h6>
+                    <a class="collapse-item" href="~/Admin/PhieuYeuCauNhap/Index">Phiếu yêu cầu nhập hàng</a>
+                    <a class="collapse-item" href="~/Admin/DonNhapHang/Index">Đơn nhập hàng</a>
+                    <a class="collapse-item" href="~/Admin/NhaCungCap/Index">Nhà cung cấp</a>
+                </div>
+            </div>
+        </li>
+
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="~/Admin/HoaDon/Index">
                 <i class="fas fa-fw fa-wrench"></i>
                 <span>Hóa đơn</span>
             </a>
-            <div id="collapseHoaDon" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Quản lý</h6>
-                    <a class="collapse-item" href="utilities-color.html">Chủ đề</a>
-                    <a class="collapse-item" href="utilities-border.html">Bài viết</a>
-                </div>
-            </div>
+
         </li>
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThongKe" aria-expanded="true" aria-controls="collapseThongKe">
@@ -77,8 +88,10 @@
             <div id="collapseThongKe" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Quản lý</h6>
-                    <a class="collapse-item" href="utilities-color.html">Chủ đề</a>
-                    <a class="collapse-item" href="utilities-border.html">Bài viết</a>
+                    <a class="collapse-item" href="~/Admin/ThongKe/Index">Sản phẩm còn/hết</a>
+                    <a class="collapse-item" href="~/Admin/ThongKe/DoanhThu">Doanh thu</a>
+                    <a class="collapse-item" href="~/Admin/HoaDon/Index">Hóa đơn</a>
+                    <a class="collapse-item" href="~/Admin/ThongKe/CanceledOrder">Đơn đã bị hủy</a>
                 </div>
             </div>
         </li>
@@ -91,12 +104,12 @@
         </div>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item active">
-            <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="true" aria-controls="collapseUsers">
+        <li class="nav-item ">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="true" aria-controls="collapseUsers">
                 <i class="fas fa-fw fa-folder"></i>
                 <span>Quản lý người dùng</span>
             </a>
-            <div id="collapseUsers" class="collapse show" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div id="collapseUsers" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Tài khoản</h6>
                     <a class="collapse-item" href="~/Admin/User/Create">Thêm mới tài khoản</a>

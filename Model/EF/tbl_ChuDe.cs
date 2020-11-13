@@ -1,4 +1,4 @@
-namespace Model.EF
+﻿namespace Model.EF
 {
     using System;
     using System.Collections.Generic;
@@ -12,10 +12,15 @@ namespace Model.EF
         public long IDChuDe { get; set; }
 
         [StringLength(250)]
+        [Display(Name ="Tên chủ đề")]
+        [Required(ErrorMessage ="Hãy nhập tên chủ đề")]
         public string sTenChuDe { get; set; }
 
         [StringLength(250)]
         public string sTenChuDeMeta { get; set; }
+        [StringLength(250)]
+        [Display(Name = "Hình ảnh")]
+        public string sImage { get; set; }
 
         public long? iParentID { get; set; }
 
@@ -39,8 +44,8 @@ namespace Model.EF
 
         [StringLength(250)]
         public string sMetaDescription { get; set; }
-
-        public bool? bStatus { get; set; }
+        [Display(Name = "Trạng thái")]
+        public bool bStatus { get; set; }
 
         public bool? bShowOnHome { get; set; }
     }

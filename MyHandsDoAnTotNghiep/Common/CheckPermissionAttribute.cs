@@ -13,7 +13,7 @@ namespace MyHandsDoAnTotNghiep
         public string RoleID { set; get; }
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            var session = (Common.UserLogin)HttpContext.Current.Session[Common.CommonConstants.USER_SESSION];
+            var session = (UserLogin)HttpContext.Current.Session[Common.CommonConstants.USER_SESSION];
             if (session == null)
             {
                 return false;
@@ -32,7 +32,7 @@ namespace MyHandsDoAnTotNghiep
         }
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            filterContext.Result = new ViewResult
+            filterContext.Result = new ViewResult 
             {
                 ViewName = "~/Areas/Admin/Views/Shared/404.cshtml"
             };

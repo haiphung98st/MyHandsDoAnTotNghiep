@@ -21,12 +21,19 @@ namespace Model.DAO
         {
             return db.tbl_BaiViet.Find(id);
         }
+
+        public tbl_BaiViet getByID(long id)
+        {
+            return db.tbl_BaiViet.SingleOrDefault(x => x.IDBaiViet == id);
+        }
         public long Create(tbl_BaiViet content)
         {
             if (string.IsNullOrEmpty(content.sTenTieuDecMeta))
             {
                 content.sTenTieuDecMeta = StringHelper.ToUnsignString(content.sTieuDe);
             }
+            content.sImages = "http://192.168.0.107:7500" + content.sImages;
+
             content.dNgayTao = DateTime.Now;
             content.iViewCount = 0;
             db.tbl_BaiViet.Add(content);
@@ -53,37 +60,50 @@ namespace Model.DAO
             return content.IDBaiViet;
         }
 
-        public long Edit(tbl_BaiViet content)
+        public bool Edit(tbl_BaiViet content)
         {
-            //var addcontent = db.tbl_BaiViet.Find(content.IDBaiViet);
-            //content.sTieuDe = addcontent.sTieuDe;
-            if (string.IsNullOrEmpty(content.sTenTieuDecMeta))
+            try
             {
-                content.sTenTieuDecMeta = StringHelper.ToUnsignString(content.sTieuDe);
-            }
-            content.dNgaySua = DateTime.Now;
-            db.SaveChanges();
-            //tags
-            //lay danh sach tag
-            if (!string.IsNullOrEmpty(content.sTags))
-            {
-                this.RemoveAllContentTag(content.IDBaiViet);
-                string[] tags = content.sTags.Split(',');
-                foreach (var tag in tags)
+                var addcontent = db.tbl_BaiViet.Find(content.IDBaiViet);
+                addcontent.sTieuDe = content.sTieuDe;
+                if (string.IsNullOrEmpty(content.sTenTieuDecMeta))
                 {
-                    var tagID = StringHelper.ToUnsignString(tag);
-                    var existTag = this.CheckTag(tagID);
-                    //them vao bang tag
-                    if (!existTag)
-                    {
-                        this.InsertTag(tagID, tag);
-                    }
-                    //them vao bang tagBaiviet
-                    this.InsertContentTag(content.IDBaiViet, tagID);
+                    content.sTenTieuDecMeta = StringHelper.ToUnsignString(content.sTieuDe);
                 }
+                //addcontent.sImages = "http://192.168.0.107:7500" + content.sImages;
+                addcontent.sImages =  content.sImages;
+                addcontent.IDChuDe = content.IDChuDe;
+                addcontent.sXemTruoc = content.sXemTruoc;
+                addcontent.sNoiDung = content.sNoiDung;
+                addcontent.bStatus = content.bStatus;
+                addcontent.sTags = content.sTags;
+                addcontent.dNgaySua = DateTime.Now;
+                db.SaveChanges();
+                //tags
+                //lay danh sach tag
+                if (!string.IsNullOrEmpty(content.sTags))
+                {
+                    this.RemoveAllContentTag(content.IDBaiViet);
+                    string[] tags = content.sTags.Split(',');
+                    foreach (var tag in tags)
+                    {
+                        var tagID = StringHelper.ToUnsignString(tag);
+                        var existTag = this.CheckTag(tagID);
+                        //them vao bang tag
+                        if (!existTag)
+                        {
+                            this.InsertTag(tagID, tag);
+                        }
+                        //them vao bang tagBaiviet
+                        this.InsertContentTag(content.IDBaiViet, tagID);
+                    }
+                }
+                return true;
             }
-
-            return content.IDBaiViet;
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
         public void RemoveAllContentTag(long contentId)
         {
@@ -127,11 +147,12 @@ namespace Model.DAO
         public IEnumerable<tbl_BaiViet> ListAllPaging( int page, int pageSize)
         {
             IQueryable<tbl_BaiViet> model = db.tbl_BaiViet;
-            return model.OrderByDescending(x => x.dNgayTao).ToPagedList(page, pageSize);
+            return model.Where(x=>x.bStatus == true).OrderByDescending(x => x.dNgayTao).ToPagedList(page, pageSize);
         }
         public List<tbl_BaiViet> listHomeContent(int top)
         {
-            return db.tbl_BaiViet.Where(x => x.sTieuDe != null).OrderByDescending(x => x.dNgayTao).Take(top).ToList();
+
+            return db.tbl_BaiViet.Where(x => x.bStatus == true).OrderByDescending(x => x.dNgayTao).Take(top).ToList();
         }
         public IEnumerable<tbl_BaiViet> ListAllByTag(string tagid,int page, int pageSize)
         {
@@ -161,6 +182,37 @@ namespace Model.DAO
                                                  dNgayTao = x.NgayTao,
                                                  IDBaiViet = x.ID
                                              });
+            return model.OrderByDescending(x => x.dNgayTao).ToPagedList(page, pageSize);
+        }
+
+        public IEnumerable<tbl_BaiViet> ListAllByUser(string username, int page, int pageSize)
+        {
+            var model = (from a in db.tbl_BaiViet
+                         join b in db.tbl_TaiKhoan
+                         on a.sNguoiTao equals b.sTenTaiKhoan
+                         where b.sTenTaiKhoan == username
+                         select new
+                         {
+                             TieuDe = a.sTieuDe,
+                             TieuDeMeta = a.sTenTieuDecMeta,
+                             Image = a.sImages,
+                             XemTruoc = a.sXemTruoc,
+                             NoiDung = a.sNoiDung,
+                             NguoiDang = a.sNguoiTao,
+                             NgayTao = a.dNgayTao,
+                             ID = a.IDBaiViet
+
+                         }).AsEnumerable().Select(x => new tbl_BaiViet()
+                         {
+                             sTieuDe = x.TieuDe,
+                             sTenTieuDecMeta = x.TieuDeMeta,
+                             sImages = x.Image,
+                             sXemTruoc = x.XemTruoc,
+                             sNoiDung = x.NoiDung,
+                             sNguoiTao = x.NguoiDang,
+                             dNgayTao = x.NgayTao,
+                             IDBaiViet = x.ID
+                         });
             return model.OrderByDescending(x => x.dNgayTao).ToPagedList(page, pageSize);
         }
         public List<tbl_Tag> ListTags(long id)

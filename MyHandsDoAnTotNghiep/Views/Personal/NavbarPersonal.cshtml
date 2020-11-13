@@ -1,0 +1,50 @@
+﻿@{ 
+    var sessionUser = (UserLogin)Session[MyHandsDoAnTotNghiep.Common.CommonConstants.USER_SESSION];
+
+}
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" style="margin-top:150px;background:#FE4C50" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
+            <div class="sidebar-brand-icon rotate-n-15">
+            </div>
+            <div>@sessionUser.HoTen</div>
+        </a>
+        <hr class="sidebar-divider">
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseQLSP" aria-expanded="true" aria-controls="collapseQLSP">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Tài khoản của tôi</span>
+            </a>
+            <div id="collapseQLSP" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Tài khoản</h6>
+                    <a class="collapse-item" href="/Personal/HoSoIndex">Hồ sơ</a>
+                    <a class="collapse-item" href="/Personal/ChangePassword">Đổi mật khẩu</a>
+                </div>
+            </div>
+        </li>
+        <hr class="sidebar-divider">
+        <li class="nav-item">
+                <a class="nav-link collapsed" href="/Personal/HoaDonIndex">
+
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Đơn mua</span>
+                </a>
+
+</li>
+        <hr class="sidebar-divider">
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/Personal/MyContent" >
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Bài viết của tôi</span>
+            </a>
+
+        </li>
+        <hr class="sidebar-divider d-none d-md-block">
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+
+    </ul>

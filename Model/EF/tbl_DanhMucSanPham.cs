@@ -40,7 +40,7 @@ namespace Model.EF
         [StringLength(250)]
         public string sMetaDescription { get; set; }
 
-        public bool? bStatus { get; set; }
+        public bool bStatus { get; set; }
 
         public bool? bShowOnHome { get; set; }
 

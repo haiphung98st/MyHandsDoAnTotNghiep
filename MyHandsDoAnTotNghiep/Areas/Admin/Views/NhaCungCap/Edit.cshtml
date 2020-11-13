@@ -1,0 +1,70 @@
+﻿@model Model.EF.tbl_NCC
+
+@*@{
+    ViewBag.Title = "Chỉnh sửa nhà cung cấp";
+    //Layout = "~/Areas/Admin/Views/Shared/_Layouts.cshtml";
+}*@
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        <input type="hidden" id="hdnID" name="hdnID" value="@Model.IDncc" />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.sTenNCC, htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.sTenNCC, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.sTenNCC, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.sDiaChi, htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.sDiaChi, new { htmlAttributes = new { @class = "form-control", @id = "txtChuDeIMG" } })
+
+                @Html.ValidationMessageFor(model => model.sDiaChi, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.sSDT, htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.sSDT, new { htmlAttributes = new { @class = "form-control", @id = "txtChuDeIMG" } })
+
+                @Html.ValidationMessageFor(model => model.sSDT, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.sEmail, htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.sEmail, new { htmlAttributes = new { @class = "form-control", @id = "txtChuDeIMG" } })
+
+                @Html.ValidationMessageFor(model => model.sEmail, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.bStatus, htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.CheckBoxFor(model => model.bStatus)
+                    @Html.ValidationMessageFor(model => model.bStatus, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Chỉnh sửa" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+

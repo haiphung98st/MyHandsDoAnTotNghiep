@@ -1,0 +1,71 @@
+﻿@model Model.EF.tbl_DanhMucSanPham
+
+@{
+    ViewBag.Title = "Sửa danh mục sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layouts.cshtml";
+}
+
+@section scripts{
+    <script>
+        $('#btnSanPhamIMG').on('click', function (e) {
+            e.preventDefault();
+            var finder = new CKFinder();
+            finder.selectActionFunction = function (url) {
+                $('#txtSanPhamIMG').val(url);
+            };
+            finder.popup();
+        })
+        var ckeditor = CKEDITOR.replace('sNoiDung', {
+            customConfig: '~/Assets/Admin/js/plugins/ckeditor/config.js',
+        });
+    </script>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    <input type="hidden" id="hdnIDbaiviet" name="hdnID" value="@Model.IDDanhMuc" />
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.sTenDanhMuc, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.sTenDanhMuc, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.sTenDanhMuc, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.sHinhAnhDanhMuc, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.sHinhAnhDanhMuc, new { htmlAttributes = new { @class = "form-control", @id = "txtSanPhamIMG" } })
+            <a class="btn btn-primary" id="btnSanPhamIMG" href="#">Chọn ảnh</a>
+
+            @Html.ValidationMessageFor(model => model.sHinhAnhDanhMuc, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.bStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.CheckBoxFor(model => model.bStatus)
+                @Html.ValidationMessageFor(model => model.bStatus, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Sửa" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+}
+
+

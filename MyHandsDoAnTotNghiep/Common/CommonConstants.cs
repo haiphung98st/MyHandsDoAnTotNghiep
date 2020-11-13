@@ -10,6 +10,7 @@ namespace MyHandsDoAnTotNghiep.Common
         public static string USER_SESSION = "USER_SESSION";
         public static string CartSession = "CartSession";
         public static string SESSION_PERMISSION = "SESSION_PERMISSION";
+        public static string SESSION_PRODUCT_YC = "SESSION_PRODUCT_YC";
 
         
     }

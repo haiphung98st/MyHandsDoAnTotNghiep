@@ -1,0 +1,55 @@
+﻿@model Model.EF.tbl_HoaDon
+
+@*@{
+    ViewBag.Title = "Cập nhật đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layouts.cshtml";
+}*@
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="form-group">
+            <p class = "control-label col-md-5" >Trạng thái</p>
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.iMaTrangThai, null,new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.iMaTrangThai, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                Khách hàng:  @Html.DisplayFor(model => model.sTenNguoiNhan, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                Số điện thoại: @Html.DisplayFor(model => model.sSDTnguoiNhan, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                Email: @Html.DisplayFor(model => model.sEmailNguoiNhan, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                Địa chỉ: @Html.DisplayFor(model => model.sDiaChi, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Cập nhật" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}

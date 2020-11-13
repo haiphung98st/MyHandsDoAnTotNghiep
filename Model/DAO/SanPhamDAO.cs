@@ -19,7 +19,11 @@ namespace Model.DAO
         }
         public List<string> ListName(string keyword)
         {
-            return db.tbl_SanPham.Where(x => x.sTenSanPham.Contains(keyword)).Select(x => x.sTenSanPham).ToList();
+            return db.tbl_SanPham.Where(x => x.sTenSanPham.Contains(keyword) && x.bStatus==true).Select(x => x.sTenSanPham).ToList();
+        }
+        public List<tbl_SanPham> ListAll()
+        {
+            return db.tbl_SanPham.Where(x => x.bStatus == true).OrderBy(x => x.dNgayTao).ToList();
         }
         public tbl_SanPham GetSanPhamByID(long id)
         {
@@ -27,15 +31,15 @@ namespace Model.DAO
         }
         public List<tbl_SanPham> ListProductNewArrivals(int top )
         {
-            return db.tbl_SanPham.OrderByDescending(x => x.dNgayTao).Take(top).ToList();
+            return db.tbl_SanPham.Where(x=>x.bStatus == true).OrderByDescending(x => x.dNgayTao).Take(top).ToList();
         }
         public List<tbl_SanPham> ListProductBestSeller(int top)
         {
-            return db.tbl_SanPham.Where(x=>x.dTopHot!=null && x.dTopHot > DateTime.Now).OrderByDescending(x => x.dNgayTao).Take(top).ToList();
+            return db.tbl_SanPham.Where(x=>x.dTopHot!=null && x.dTopHot > DateTime.Now && x.bStatus == true).OrderByDescending(x => x.dNgayTao).Take(top).ToList();
         }
         public List<ProductViewModel> ListProductByCategoryID(int categoryid, ref int totalRecord, int page=1, int pageSize=1)
         {
-            totalRecord = db.tbl_SanPham.Where(x => x.IDDanhMuc == categoryid).Count();
+            totalRecord = db.tbl_SanPham.Where(x => x.IDDanhMuc == categoryid && x.bStatus == true).Count();
             //var model = db.tbl_SanPham.Where(x => x.IDDanhMuc == categoryid).OrderByDescending(x => x.dNgayTao).Skip((page - 1) * pageSize).Take(pageSize).ToList();
             //lay tong cac san pham trong danh muc. Skip-lay tu ban ghi 
             //return model;
@@ -46,6 +50,7 @@ namespace Model.DAO
                          where a.IDDanhMuc == categoryid
                          select new 
                          {
+                             iSoluong = a.iSoLuong,
                              sTenDanhMucMeta = b.sTenDanhMucMeta,
                              sTenDanhMuc = b.sTenDanhMuc,
                              dNgayTao = a.dNgayTao,
@@ -58,6 +63,7 @@ namespace Model.DAO
                          })
                          .AsEnumerable().Select(x => new ProductViewModel()
                           {
+                              iSoluong = x.iSoluong,
                               sTenDanhMucMeta = x.sTenDanhMucMeta,
                               sTenDanhMuc = x.sTenDanhMuc,
                               dNgayTao = x.dNgayTao,
@@ -76,10 +82,30 @@ namespace Model.DAO
         {
             return db.tbl_SanPham.Find(id);
         }
-        
+        public bool divSanPham(long id,int soluong)
+        {
+            try
+            {
+                var sanpham = db.tbl_SanPham.Find(id);
+                if(sanpham.iSoLuong >= soluong)
+                {
+                    sanpham.iSoLuong = sanpham.iSoLuong - soluong;
+                    db.SaveChanges();
+                    return true;
+                }
+                else { return false; }
+                
+            }
+           
+            catch(Exception ex)
+            {
+                return false;
+            }
+
+        }
         public List<ProductViewModel> Search(string keyword, ref int totalRecord, int page = 1, int pageSize = 2)
         {
-            totalRecord = db.tbl_SanPham.Where(x => x.sTenSanPham.Contains(keyword)).Count();
+            totalRecord = db.tbl_SanPham.Where(x => x.sTenSanPham.Contains(keyword) && x.bStatus == true).Count();
             //var model = db.tbl_SanPham.Where(x => x.IDDanhMuc == categoryid).OrderByDescending(x => x.dNgayTao).Skip((page - 1) * pageSize).Take(pageSize).ToList();
             //lay tong cac san pham trong danh muc. Skip-lay tu ban ghi 
             //return model;
@@ -129,7 +155,7 @@ namespace Model.DAO
         public IEnumerable<tbl_SanPham> ListAllPaging(int page, int pageSize)
         {
             IQueryable<tbl_SanPham> model = db.tbl_SanPham;
-            return model.OrderByDescending(x => x.dNgayTao).ToPagedList(page, pageSize);
+            return model.Where(x => x.bStatus == true).OrderByDescending(x => x.dNgayTao).ToPagedList(page, pageSize);
         }
         public long Create(tbl_SanPham sanpham)
         {
@@ -137,6 +163,8 @@ namespace Model.DAO
             {
                 sanpham.sTenSanPhamMeta = StringHelper.ToUnsignString(sanpham.sTenSanPham);
             }
+            //sanpham.sImages = "http://192.168.0.107:7500" + sanpham.sImages;
+            sanpham.sMaSanPham = sanpham.IDDanhMuc+ " " + sanpham.ID;
             sanpham.dNgayTao = DateTime.Now;
             sanpham.iViewCount = 0;
             db.tbl_SanPham.Add(sanpham);
@@ -179,11 +207,15 @@ namespace Model.DAO
                     sanpham.sTenSanPhamMeta = StringHelper.ToUnsignString(entity.sTenSanPham);
                 }
                 sanpham.sImages = entity.sImages;
-                sanpham.sMaSanPham = entity.sMaSanPham;
+
                 sanpham.dGiaBan = entity.dGiaBan;
+                sanpham.IDDanhMuc = entity.IDDanhMuc;
+                sanpham.sMaSanPham = sanpham.IDDanhMuc + " " + sanpham.ID;
+
                 sanpham.dGiaKhuyenMai = entity.dGiaKhuyenMai;
                 sanpham.bStatus = entity.bStatus;
                 sanpham.dNgaySua = DateTime.Now;
+                
                 db.SaveChanges();
                 return true;
             }

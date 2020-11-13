@@ -2,9 +2,11 @@
 @{
     ViewBag.Title = "Thanh toán";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var session = (UserLogin)Session[MyHandsDoAnTotNghiep.Common.CommonConstants.USER_SESSION];
 }
 @section jsFooter{
     <script src="~/Assets/Client/js/controller/giohangjs.js"></script>
+    <script src="~/Assets/Client/js/controller/TinhThanhPayment.js"></script>
 }
 <div style="height:50px"></div>
 <div class="container single_product_container">
@@ -22,7 +24,7 @@
                         var url = "/chi-tiet/" + item.SanPham.sTenSanPhamMeta + "-" + item.SanPham.ID;
                         <li class="list-group-item d-flex justify-content-between lh-condensed">
                             <div>
-                                <h6 class="my-0"><a href="@url">@item.SanPham.sTenSanPham</a></h6>
+                                <h6 class="my-0"><a href="@url">@item.SanPham.sTenSanPham</a></h6> x @item.SoLuong
                             </div>
                             <span class="text-muted">@((item.SanPham.dGiaKhuyenMai.HasValue ? (item.SanPham.dGiaKhuyenMai * item.SoLuong).Value.ToString("N0") : (item.SanPham.dGiaBan * item.SoLuong).Value.ToString("N0")))</span>
                         </li>
@@ -30,24 +32,98 @@
                     }
 
                     <li class="list-group-item d-flex justify-content-between">
-                        <span>Tổng tiền (VND)</span>
-                        <strong>@ViewBag.TotalAmount đ</strong>
+                        @*<span>Tổng tiền (VND)</span>
+                            <strong>@ViewBag.TotalAmount đ</strong>*@
                     </li>
 
                 </ul>
-                    
+
             </div>
             <div class="col-md-8 order-md-1">
                 <h4 class="mb-3">Thông tin giao hàng</h4>
-                @using (Html.BeginForm("Payment", "GioHangItem", FormMethod.Post))
+                @if (session != null)
                 {
+                    <hr class="mb-4">
+                    using (Html.BeginForm("Payment", "GioHangItem", FormMethod.Post))
+                    {
+                        <div class="mb-3">
+                            <label for="sTenNguoiNhan">Tên người nhận</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"></span>
+                                </div>
+                                <input type="text" class="form-control" name="sTenNguoiNhan" id="sTenNguoiNhan" placeholder="Tên người nhận" value="@session.HoTen" required>
+                                <div class="invalid-feedback" style="width: 100%;">
+                                    Hãy nhập họ tên người nhận
+                                </div>
+                            </div>
+                            <br />
+                            <label for="sEmail">Email</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"></span>
+                                </div>
+                                <input type="text" class="form-control" name="sEmail" id="sEmail" value="@session.Email" placeholder="Địa chỉ email" required>
+                                <div class="invalid-feedback" style="width: 100%;">
+                                    Hãy nhập Email
+                                </div>
+                            </div>
+                            <br />
+                            <label for="sSoDienThoai">Số điện thoại</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"></span>
+                                </div>
+                                <input type="text" class="form-control" name="sSoDienThoai" id="sSoDienThoai" value="@session.SDT" placeholder="Số điện thoại" required>
+                                <div class="invalid-feedback" style="width: 100%;">
+                                    Hãy nhập số điện thoại
+                                </div>
+                            </div>
+                            <label for="sDiaChi">Tỉnh/Thành phố</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"></span>
+                                </div>
+                                @Html.DropDownList("iTinhThanhID", new SelectList(new string[] { }), new { @class = "form-control", @id = "ddlTinhThanh" })
+
+                                <input type="hidden" id="hdnTenTinhThanh" name="hdnTenTinhThanh" />
+
+                            </div>
+                            <label for="sDiaChi">Quận/Huyện</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"></span>
+                                </div>
+                                @Html.DropDownList("iQuanHuyenID", new SelectList(new string[] { }), new { @class = "form-control", @id = "ddlQuanHuyen" })
+                                <input type="hidden" id="hdnTenQuanHuyen" name="hdnTenQuanHuyen" />
+
+                            </div>
+                            <label for="sDiaChi">Địa chỉ</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"></span>
+                                </div>
+                                <input type="text" class="form-control" name="sDiaChi" id="sDiaChi" value="@session.DiaChi" placeholder="Địa chỉ" required>
+                                <div class="invalid-feedback" style="width: 100%;">
+                                    Hãy nhập địa chỉ
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-lg btn-block" type="submit">Tiếp tục</button>
+                        <p>(Xin vui lòng kiểm tra lại đơn hàng trước khi Đặt Mua)</p>
+                    }
+                }
+                else
+                {
+                    using (Html.BeginForm("Payment", "GioHangItem", FormMethod.Post))
+                    {
             <div class="mb-3">
                 <label for="sTenNguoiNhan">Tên người nhận</label>
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"></span>
                     </div>
-                    <input type="text" class="form-control" name="sTenNguoiNhan"id="sTenNguoiNhan" placeholder="Tên người nhận" required>
+                    <input type="text" class="form-control" name="sTenNguoiNhan" id="sTenNguoiNhan" placeholder="Tên người nhận" required>
                     <div class="invalid-feedback" style="width: 100%;">
                         Hãy nhập họ tên người nhận
                     </div>
@@ -58,7 +134,10 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"></span>
                     </div>
-                    <input type="text" class="form-control" name ="sEmail" id="sEmail" placeholder="Địa chỉ email">
+                    <input type="text" class="form-control" name="sEmail" id="sEmail" placeholder="Địa chỉ email" required>
+                    <div class="invalid-feedback" style="width: 100%;">
+                        Hãy nhập Email
+                    </div>
                 </div>
                 <br />
                 <label for="sSoDienThoai">Số điện thoại</label>
@@ -71,6 +150,25 @@
                         Hãy nhập số điện thoại
                     </div>
                 </div>
+                <label>Tỉnh/Thành phố</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"></span>
+                    </div>
+                    @Html.DropDownList("iTinhThanhID", new SelectList(new string[] { }), new { @class = "form-control", @id = "ddlTinhThanh" })
+
+                    <input type="hidden" id="hdnTenTinhThanh" name="hdnTenTinhThanh" />
+
+                </div>
+                <label>Quận/Huyện</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"></span>
+                    </div>
+                    @Html.DropDownList("iQuanHuyenID", new SelectList(new string[] { }), new { @class = "form-control", @id = "ddlQuanHuyen" })
+                    <input type="hidden" id="hdnTenQuanHuyen" name="hdnTenQuanHuyen" />
+
+                </div>
                 <label for="sDiaChi">Địa chỉ</label>
                 <div class="input-group">
                     <div class="input-group-prepend">
@@ -82,11 +180,11 @@
                     </div>
                 </div>
             </div>
-                    <hr class="mb-4">
-                    <button class="btn btn-primary btn-lg btn-block" type="submit">Tiếp tục</button>
-                    <p>(Xin vui lòng kiểm tra lại đơn hàng trước khi Đặt Mua)</p>
+                        <hr class="mb-4">
+                        <button class="btn btn-primary btn-lg btn-block" type="submit">Tiếp tục</button>
+                        <p>(Xin vui lòng kiểm tra lại đơn hàng trước khi Đặt Mua)</p>
+                    }
                 }
-
 
             </div>
         </div>

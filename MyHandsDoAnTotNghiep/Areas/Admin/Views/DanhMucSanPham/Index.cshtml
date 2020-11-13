@@ -1,0 +1,78 @@
+﻿@model PagedList.IPagedList<Model.EF.tbl_DanhMucSanPham>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Quản lý danh mục";
+    Layout = "~/Areas/Admin/Views/Shared/_Layouts.cshtml";
+}
+
+@section header{
+    Danh sách sản phẩm
+}
+@section scripts {
+    <script src="~/Assets/Admin/js/controller/DanhMucSPControllerJS.js"></script>
+}
+@using (Html.BeginForm("Index", "DanhMucSanPham", FormMethod.Get))
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <table>
+                <tr>
+                    <td><input type="text" class="form-control bg-light  small" name="SearchDanhMuc" value="@ViewBag.SearchDanhMuc" /></td>
+                    <td><button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button></td>
+                    <td><a href="~/Admin/DanhMucSanPham/Create" class="btn btn-primary">Thêm mới</a></td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+    <br />
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tên danh mục</th>
+                    <th scope="col">Hình ảnh</th>
+                    <th scope="col">Ngày chỉnh sửa</th>
+                    <th scope="col">Trạng thái</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr id="row_@item.IDDanhMuc">
+                        <td>
+                        </td>
+                        <td>@item.sTenDanhMuc</td>
+                        <td><img src="@item.sHinhAnhDanhMuc" style="width:150px" /> </td>
+                        <td>@(item.dNgaySua.HasValue?item.dNgaySua.Value.ToString("dd/MM/yyyy"):"")</td>
+
+                        <td><a href="#" class="btnActive" data-id="@item.IDDanhMuc">@(item.bStatus?"Hiện":"Ẩn")</a></td>
+                        <td>
+                            <a href="/Admin/DanhMucSanPham/Edit/@item.IDDanhMuc">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            &nbsp &nbsp &nbsp
+
+                            @Ajax.ActionLink(" ", "Delete", new { id = item.IDDanhMuc }, new AjaxOptions
+                       {
+                           Confirm = "Bạn muốn xóa ?",
+                           OnComplete = "$('#row_" + @item.IDDanhMuc + "').remove()",
+                           HttpMethod = "Delete"
+                       }, new { @class = "fas fa-trash-alt" })
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, SearchDanhMuc = @ViewBag.SearchDanhMuc }))
+
+
+    </div>
+</div>

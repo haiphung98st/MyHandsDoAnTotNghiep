@@ -10,7 +10,7 @@ namespace Model.ViewModel
     {
         public long ID { get; set; }
         public string sImages { get; set; }
-
+        public int? iSoluong { get; set; }
         public string sTenSanPham { get; set; }
 
         public string sMaSanPham { get; set; }

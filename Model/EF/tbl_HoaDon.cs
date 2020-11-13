@@ -11,11 +11,16 @@ namespace Model.EF
         public long ID { get; set; }
 
         public DateTime? dNgayTao { get; set; }
+        public DateTime? dNgaySua { get; set; }
+
 
         public long? IDKhachHang { get; set; }
+        public long iMaTrangThai { get; set; }
 
         [StringLength(50)]
         public string sTenNguoiNhan { get; set; }
+        [StringLength(50)]
+        public string sNguoiTiepNhan { get; set; }
 
         [StringLength(50)]
         public string sSDTnguoiNhan { get; set; }

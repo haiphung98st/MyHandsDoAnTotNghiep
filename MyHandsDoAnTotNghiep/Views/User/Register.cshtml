@@ -70,6 +70,8 @@
             <div class="col-md-10">
                 @Html.DropDownList("iTinhThanhID", new SelectList(new string[] { }), new { @class = "form-control", @id = "ddlTinhThanh" })
                 @Html.ValidationMessageFor(model => model.iTinhThanhID, "", new { @class = "text-danger" })
+                <input type="hidden" id="hdnTenTinhThanh" name="hdnTenTinhThanh" />
+
             </div>
         </div>
         <div class="form-group">
@@ -77,6 +79,8 @@
             <div class="col-md-10">
                 @Html.DropDownList("iQuanHuyenID", new SelectList(new string[] { }), new { @class = "form-control", @id = "ddlQuanHuyen" })
                 @Html.ValidationMessageFor(model => model.iTinhThanhID, "", new { @class = "text-danger" })
+                <input type="hidden" id="hdnTenQuanHuyen" name="hdnTenQuanHuyen" />
+
             </div>
         </div>
         <div class="form-group">

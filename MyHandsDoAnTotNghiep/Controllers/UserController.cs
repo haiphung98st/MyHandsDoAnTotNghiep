@@ -36,6 +36,7 @@ namespace MyHandsDoAnTotNghiep.Controllers
         public ActionResult Logout()
         {
             Session[CommonConstants.USER_SESSION] = null;
+            Session[CommonConstants.CartSession] = null;
             return Redirect("/");
         }
         // GET: User
@@ -113,6 +114,10 @@ namespace MyHandsDoAnTotNghiep.Controllers
                     var userSession = new UserLogin();
                     userSession.UserName = user.sTenTaiKhoan;
                     userSession.UserID = user.ID;
+                    userSession.HoTen = user.sHoTen;
+                    userSession.Email = user.sEmail;
+                    userSession.DiaChi = user.sDiaChi;
+                    userSession.SDT = user.sSDT;
                     Session.Add(CommonConstants.USER_SESSION, userSession);
                     ViewBag.name = userSession.UserName;
                     return Redirect("/");
@@ -145,7 +150,7 @@ namespace MyHandsDoAnTotNghiep.Controllers
         
         
         
-        public ActionResult Register(RegisterModel model)
+        public ActionResult Register(RegisterModel model, FormCollection formcollection)
         {
             if (ModelState.IsValid)
             {
@@ -165,11 +170,16 @@ namespace MyHandsDoAnTotNghiep.Controllers
                 }
                 else
                 {
+                    var TenTinhThanh = formcollection["hdnTenTinhThanh"];
+                    var TenQuanHuyen = formcollection["hdnTenQuanHuyen"];
+
+
                     var user = new tbl_TaiKhoan();
+                    user.sHoTen = model.sTenNguoiDung;
                     user.sTenTaiKhoan = model.sTenDangNhap;
                     user.sMatKhau = Encryptor.MD5Hash(model.sMatKhau);
                     user.sEmail = model.sEmail;
-                    user.sDiaChi = model.sDiaChi;
+                    user.sDiaChi = model.sDiaChi + ","+  TenQuanHuyen + "," + TenTinhThanh;
                     user.sSDT = model.sSDT;
                     user.dNgayTao = DateTime.Now;
                     if (!string.IsNullOrEmpty(model.iTinhThanhID))
@@ -185,7 +195,10 @@ namespace MyHandsDoAnTotNghiep.Controllers
                     if(result > 0)
                     {
                         ViewBag.Success = "Đăng ký thành công";
+                        
                         model = new RegisterModel();
+                        //Session.Add(CommonConstants.USER_SESSION, user);
+                        //return Redirect("/");
                     }
                     else
                     {

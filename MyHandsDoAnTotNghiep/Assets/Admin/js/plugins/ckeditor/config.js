@@ -15,7 +15,8 @@ CKEDITOR.editorConfig = function( config ) {
 	config.filebrowserFlashBrowseUrl = '/Assets/Admin/js/plugins/ckfinder/ckfinder.html?Type=Flash';
 	config.filebrowserUploadUrl = '/Assets/Admin/js/plugins/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Files';
 	config.filebrowserImageUploadUrl = '/Data';
-	config.filebrowserFlashUploadUrl = '/Assets/Admin/js/plugins/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Flash'; (empty string = disabled)]
+	config.filebrowserFlashUploadUrl = '/Assets/Admin/js/plugins/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Flash';
+	//(empty string = disabled)]
 	CKFinder.setupCKEditor(null, '/Assets/Admin/js/plugins/ckfinder/');
 
 
@@ -48,3 +49,17 @@ CKEDITOR.editorConfig = function( config ) {
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 };
+//var editor = CKEDITOR.replace('editor1', {
+//	syntaxhighlight_lang = 'csharp',
+//	syntaxhighlight_hideControls = true,
+//	language = 'vi',
+//	filebrowserBrowseUrl = '/Assets/Admin/js/plugins/ckfinder/ckfinder.html',
+//	filebrowserImageBrowseUrl = '/Assets/Admin/js/plugins/ckfinder/ckfinder.html?Type=Images',
+//	filebrowserFlashBrowseUrl = '/Assets/Admin/js/plugins/ckfinder/ckfinder.html?Type=Flash',
+//	filebrowserUploadUrl = '/Assets/Admin/js/plugins/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Files',
+//	filebrowserImageUploadUrl = '/Data',
+//	filebrowserFlashUploadUrl = '/Assets/Admin/js/plugins/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Flash',
+//	//(empty string = disabled)]
+//	//CKFinder.setupCKEditor(null, '/Assets/Admin/js/plugins/ckfinder/'),
+//});
+//CKFinder.setupCKEditor(editor, '/Assets/Admin/js/plugins/ckfinder/');

@@ -11,6 +11,8 @@ namespace Common
         public static string CLIENT_GROUP = "client";
         public static string ADMIN_GROUP = "admin";
         public static string MOD_GROUP = "mod";
+        public static string SALE_GROUP = "sale";
+        public static string CASHIER_GROUP = "cashier";
 
 
     }

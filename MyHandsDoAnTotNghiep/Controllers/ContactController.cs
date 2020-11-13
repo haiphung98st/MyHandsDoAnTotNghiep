@@ -1,7 +1,9 @@
-﻿using Model.DAO;
+﻿using Common;
+using Model.DAO;
 using Model.EF;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -26,7 +28,17 @@ namespace MyHandsDoAnTotNghiep.Controllers
             feedback.sSoDienThoai = mobile;
             feedback.sNoiDung = content;
             feedback.sDiaChi = address;
+            string mailcontent = System.IO.File.ReadAllText(Server.MapPath("~/Assets/Client/Templates/ContactMail.html"));
 
+            mailcontent = mailcontent.Replace("{{sTenNguoiNhan}}", name);
+            mailcontent = mailcontent.Replace("{{sSoDienThoai}}", mobile);
+            mailcontent = mailcontent.Replace("{{sEmail}}", email);
+            mailcontent = mailcontent.Replace("{{sDiaChi}}", address);
+            mailcontent = mailcontent.Replace("{{sNoiDung}}", content);
+            var toEmail = ConfigurationManager.AppSettings["ToEmailAddress"].ToString();
+
+            new Mail().SendMail(email, "Thông báo mới từ MyHands", mailcontent);
+            new Mail().SendMail(toEmail, "Lượt đăng ký mới", mailcontent);
             var id = new LienHeDAO().InsertFeedBack(feedback);
             if (id > 0)
             {
@@ -35,6 +47,7 @@ namespace MyHandsDoAnTotNghiep.Controllers
                     status = true
                 });
                 //send mail
+                
             }
 
             else

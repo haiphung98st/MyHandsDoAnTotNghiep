@@ -1,6 +1,6 @@
 $(function () {
     $('#AlertBox').removeClass('hide');
-    $('#AlertBox').delay(1000).slideUp(500);
+    $('#AlertBox').delay(3000).slideUp(500);
 
 });
 

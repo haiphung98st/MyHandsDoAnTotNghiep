@@ -1,11 +1,15 @@
 ﻿@model List<Model.EF.tbl_Menu>
-<div class="menu">
-    <ul class="navbar_menu">
-        @foreach (var item in Model)
-        {
-            <li><a href="@item.sLink" target="@item.sTarget">@item.sText</a></li>
-        }
+    <div class="menu">
+        <ul class="navbar_menu">
+            @foreach (var item in Model)
+            {
+                <li><a href="@item.sLink" target="@item.sTarget">@item.sText</a></li>
+            }
+            <span><i class="fas fa-bell"></i><span class="count ">&nbsp;</span></span>
+            <div class="noti-content">
+                <div class="noti-top-arrow"></div>
+                <ul id="notiContent"></ul>
+            </div>
+        </ul>
         
-        
-    </ul>
-</div>
+    </div>

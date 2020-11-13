@@ -1,0 +1,67 @@
+﻿@model List<Model.ViewModel.PhieuYeuCauViewModel>
+
+@{
+    ViewBag.Title = "Thêm phiếu yêu cầu";
+    Layout = "~/Areas/Admin/Views/Shared/_Layouts.cshtml";
+}
+@section scripts{
+    <script src="~/Assets/Admin/js/controller/addPhieuYeuCauJS.js"></script>
+
+}
+@using (Html.BeginForm("Create", "PhieuYeuCauNhap", FormMethod.Post))
+{
+<div class="form-group">
+    <div class="col-md-10">
+        Nhà cung cấp:
+        @Html.DropDownList("NhaCungCap", new SelectList(ViewBag.IDncc, "IDncc", "sTenNCC"), "Chọn nhà cung cấp", new { @class = "form-control", @id = "ddlncc" })
+        <input type="hidden" id="hdnNCC" name="hdnNCC" />
+    </div>
+
+</div>
+
+<div class="form-group">
+    <div class="col-md-10">
+        Nhà cung cấp:
+        @Html.DropDownList("SanPham", new SelectList(ViewBag.IDSanPham, "ID", "sTenSanPham"), "Chọn sản phẩm", new { @class = "form-control", @id = "ddlSanPham" })
+    </div>
+
+</div>
+<div class="row">
+    <div class="col">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.sanPham.sTenSanPham</td>
+                        <td><input type="number" class="txtQuantity" data-id="@item.sanPham.ID" value="@item.iSoLuongYC" /></td>
+                        <td>
+                            <a href="#" data-id="@item.sanPham.ID" class="btn btn-white border-secondary bg-white btn-md mb-2 btn-delete">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<div class="form-group">
+    <button id="btnCapNhat" href="#" class="btn btn-primary ">Cập nhật</button>
+
+    <button id="btnThemPhieuYeuCau1" type="submit" class="btn btn-primary">Thêm phiếu yêu cầu</button>
+
+</div>
+}
+<div>
+    @Html.ActionLink("Trở về", "Index")
+</div>

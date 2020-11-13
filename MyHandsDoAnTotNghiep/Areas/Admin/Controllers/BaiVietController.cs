@@ -36,14 +36,15 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult Edit(tbl_BaiViet model)
+        public ActionResult Edit(tbl_BaiViet model, FormCollection formcollection)
         {
             if (ModelState.IsValid)
             {
                 //var dao = new BaiVietDAO();
-
+                long idbaiviet = long.Parse( formcollection["hdnIDbaiviet"]);
                 var session = (UserLogin)Session[CommonConstants.USER_SESSION];
                 model.sNguoiSua = session.UserName;
+                model.IDBaiViet = idbaiviet;
                 //var result = dao.Edit(model);
                 new BaiVietDAO().Edit(model);
 

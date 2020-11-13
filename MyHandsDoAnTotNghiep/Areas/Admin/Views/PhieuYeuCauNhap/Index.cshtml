@@ -1,0 +1,38 @@
+﻿@model List<Model.ViewModel.PhieuYeuCauViewModel>
+
+@{
+    ViewBag.Title = "Phiếu yêu cầu";
+    Layout = "~/Areas/Admin/Views/Shared/_Layouts.cshtml";
+}
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nhà cung cấp</th>
+            <th scope="col">Sản phẩm</th>
+            <th scope="col">Số lượng</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+        <tr id="row_@item.IDPhieuYeuCau">
+            <td>@item.IDPhieuYeuCau
+            </td>
+            <td>@item.sTenNCC</td>
+
+            <td>@item.sTenSanPham</td>
+            <td>@item.iSoLuongYC</td>
+
+        </tr>
+            }
+        }
+    </tbody>
+</table>
+
+

@@ -12,7 +12,7 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
     public class SanPhamController : BaseController
     {
         // GET: Admin/SanPham
-        public ActionResult Index(string SearchSanPham, int page = 1, int pagesize = 4)
+        public ActionResult Index(string SearchSanPham, int page = 1, int pagesize = 5)
         {
             var dao = new SanPhamDAO();
             var model = dao.ListAllPaging(SearchSanPham, page, pagesize);
@@ -40,7 +40,7 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dao = new SanPhamDAO();
+                //var dao = new SanPhamDAO();
 
                 var session = (UserLogin)Session[CommonConstants.USER_SESSION];
                 model.sNguoiSua = session.UserName;

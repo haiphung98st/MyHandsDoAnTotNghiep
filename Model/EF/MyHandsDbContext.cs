@@ -33,10 +33,13 @@ namespace Model.EF
         public virtual DbSet<tbl_Roles> tbl_Roles { get; set; }
         public virtual DbSet<tbl_Permission> tbl_Permissions { get; set; }
         public virtual DbSet<tbl_PhanQuyen> tbl_PhanQuyens { get; set; }
-
-
-
-
+        public virtual DbSet<tbl_TrangThaiHoaDon> tbl_TrangThaiHoaDon { get; set; }
+        public virtual DbSet<tbl_NCC> tbl_NCC { get; set; }
+        public virtual DbSet<tbl_PhieuYeuCauNhap> tbl_PhieuYeuCauNhap { get; set; }
+        public virtual DbSet<tbl_DonNhapHang> tbl_DonNhapHang { get; set; }
+        public virtual DbSet<tbl_ChiTietPhieuYC> tbl_ChiTietPhieuYC { get; set; }
+        public virtual DbSet<tbl_ChiTietDonNhapHang> tbl_ChiTietDonNhapHang { get; set; }
+        public virtual DbSet<tbl_Notification> tbl_Notification { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -165,7 +168,15 @@ namespace Model.EF
                 .IsUnicode(false);
         }
 
-       // public System.Data.Entity.DbSet<Model.ViewModel.ProductViewModel> ProductViewModels { get; set; }
+        public System.Data.Entity.DbSet<Model.ViewModel.PhieuYeuCauViewModel> PhieuYeuCauViewModels { get; set; }
+
+        //public System.Data.Entity.DbSet<Model.ViewModel.HoaDonViewModel> HoaDonViewModels { get; set; }
+
+        //public System.Data.Entity.DbSet<MyHandsDoAnTotNghiep.Models.ChangePasswordModel> ChangePasswordModels { get; set; }
+
+        //public System.Data.Entity.DbSet<Model.ViewModel.HoaDonViewModel> HoaDonViewModels { get; set; }
+
+        // public System.Data.Entity.DbSet<Model.ViewModel.ProductViewModel> ProductViewModels { get; set; }
 
         //public System.Data.Entity.DbSet<MyHandsDoAnTotNghiep.Models.LoginModel> LoginModels { get; set; }
 

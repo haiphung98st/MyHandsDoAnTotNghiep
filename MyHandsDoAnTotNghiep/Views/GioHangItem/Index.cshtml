@@ -38,7 +38,7 @@
                                     <span>@(item.SanPham.dGiaBan.HasValue ? item.SanPham.dGiaBan.Value.ToString("N0") : " ")</span>
                                 </td>
                                 <td><input type="number" class="txtQuantity" data-id="@item.SanPham.ID" value="@item.SoLuong" /></td>
-                                <td class="product_price">@((item.SanPham.dGiaKhuyenMai.HasValue ? (item.SanPham.dGiaKhuyenMai * item.SoLuong).Value.ToString("N0") : (item.SanPham.dGiaBan * item.SoLuong).Value.ToString("N0")))</td>
+                                <td class="product_price" id="giasanpham">@((item.SanPham.dGiaKhuyenMai.HasValue ? (item.SanPham.dGiaKhuyenMai * item.SoLuong).Value.ToString("N0") : (item.SanPham.dGiaBan * item.SoLuong).Value.ToString("N0")))</td>
                                 <td>
                                     <a href="#" data-id="@item.SanPham.ID" class="btn btn-white border-secondary bg-white btn-md mb-2 btn-delete">
                                         <i class="fa fa-trash"></i>
@@ -54,10 +54,11 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td>Tổng tiền:</td>
-                            <td> &nbsp;@Model.Sum(x => x.SanPham.dGiaBan).Value.ToString("N0")</td>
+                            <td></td>
+                            <td id="total"> </td>
                         </tr>
                     </tfoot>
+                    <span id="total"> </span>
                 </table>
                 <table class="table">
                     <tr>

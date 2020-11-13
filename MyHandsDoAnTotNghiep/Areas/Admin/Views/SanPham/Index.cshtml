@@ -39,7 +39,6 @@
                     <th scope="col">Giá bán</th>
                     <th scope="col">Giá khuyến mãi</th>
                     <th scope="col">Trạng thái</th>
-                    <th scope="col">Thao tác</th>
                     <th></th>
                 </tr>
             </thead>
@@ -54,8 +53,7 @@
                     <td>@item.dGiaBan</td>
                     <td>@item.dGiaKhuyenMai</td>
 
-                    <td>@item.bStatus</td>
-                    <td><a href="#" class="btnActive" data-id="@item.ID">@(item.bStatus?"Kích hoạt":"Khóa")</a></td>
+                    <td><a href="#" class="btnActive" data-id="@item.ID">@(item.bStatus?"Hiện":"Ẩn")</a></td>
                     <td>
                         <a href="/Admin/SanPham/Edit/@item.ID">
                             <i class="fas fa-edit"></i>
@@ -75,7 +73,7 @@
             </tbody>
         </table>
 
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @searchUser = @ViewBag.SearchUserString }))
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, SearchSanPham = @ViewBag.SearchSanPham }))
 
 
     </div>
