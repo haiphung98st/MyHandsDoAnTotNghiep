@@ -101,6 +101,7 @@ namespace MyHandsDoAnTotNghiep.Controllers
             return Redirect("/");
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel loginModel)
         {
             if (ModelState.IsValid)
@@ -112,12 +113,16 @@ namespace MyHandsDoAnTotNghiep.Controllers
                     //var session = (UserLogin)Session[CommonConstants.USER_SESSION];
                     var user = dao.getByID(loginModel.sTenTaiKhoanLogin);
                     var userSession = new UserLogin();
+                    var listPerrmission = dao.GetListCredential(loginModel.sTenTaiKhoanLogin);
                     userSession.UserName = user.sTenTaiKhoan;
                     userSession.UserID = user.ID;
                     userSession.HoTen = user.sHoTen;
                     userSession.Email = user.sEmail;
                     userSession.DiaChi = user.sDiaChi;
                     userSession.SDT = user.sSDT;
+                    userSession.GroupID = user.sQuyen;
+
+                    Session.Add(CommonConstants.SESSION_PERMISSION, listPerrmission);
                     Session.Add(CommonConstants.USER_SESSION, userSession);
                     ViewBag.name = userSession.UserName;
                     return Redirect("/");
@@ -143,6 +148,10 @@ namespace MyHandsDoAnTotNghiep.Controllers
                 }
             }
 
+            
+            
+            
+            
             return View(loginModel);
         }
         [HttpPost]

@@ -8,12 +8,13 @@
         * element that contains the map. */
     #mapCanvas {
         height: 700px;
-        width:100%;
+        width: 100%;
     }
 </style>
 @section jsFooter{
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
-    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAh88HDkAuueSfBs-b_d6RyWg6egHHcs54&callback=initMap&libraries=&v=weekly"></script>
     <script src="~/Assets/Client/js/controller/contactController.js"></script>
     <script>
         function initMap() {

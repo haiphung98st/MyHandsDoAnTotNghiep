@@ -49,9 +49,10 @@
         [Display(Name = "Số lượng")]
         [Required(ErrorMessage = "Hãy nhập số lượng")]
 
-        public int? iSoLuong { get; set; }
+        public int iSoLuong { get; set; }
 
         public bool? bIncludeVAT { get; set; }
+        public bool? bCustomActive { get; set; }
 
         public long? IDDanhMuc { get; set; }
 

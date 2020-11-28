@@ -13,6 +13,7 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
     public class NhaCungCapController : BaseController
     {
         // GET: Admin/NhaCungCap
+        [CheckPermission(RoleID ="VIEW_NCC")]
         public ActionResult Index(string SearchNCC, int page = 1, int pagesize = 5)
         {
             var dao = new NhaCungCapDAO();
@@ -21,11 +22,13 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
             return View(model);
         }
         [HttpGet]
+        [CheckPermission(RoleID = "ADD_NCC")]
+
         public ActionResult Create()
         {
             return PartialView();
         }
-
+        [CheckPermission(RoleID = "EDIT_NCC")]
         public ActionResult Edit(long id)
         {
             var dao = new NhaCungCapDAO();
@@ -35,6 +38,8 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckPermission(RoleID = "EDIT_NCC")]
+
         public ActionResult Edit(tbl_NCC model,FormCollection formcollection)
         {
             if (ModelState.IsValid)
@@ -54,6 +59,8 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
+        [CheckPermission(RoleID = "ADD_NCC")]
+
         public ActionResult Create(tbl_NCC model)
         {
             if (ModelState.IsValid)

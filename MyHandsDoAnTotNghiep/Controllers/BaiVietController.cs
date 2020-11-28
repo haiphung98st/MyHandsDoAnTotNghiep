@@ -1,4 +1,5 @@
 ﻿using Model.DAO;
+using Model.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,8 @@ namespace MyHandsDoAnTotNghiep.Controllers
         {
             var model = new BaiVietDAO().GetBaiVietByID(id);
             ViewBag.Tag = new BaiVietDAO().ListTags(id);
+            ViewBag.BaiVietCMT = new BaiVietCommentDAO().ListAll(id);
+
             return View(model);
 
         }
@@ -57,6 +60,31 @@ namespace MyHandsDoAnTotNghiep.Controllers
             ViewBag.Next = page + 1;
             ViewBag.Prev = page - 1;
             return View(model);
+        }
+        [HttpPost]
+        public JsonResult AddComment(string sNoiDung, string IDBaiViet)
+        {
+            var baivietCMT = new tbl_BaiVietComment();
+            var userSession = (UserLogin)Session[MyHandsDoAnTotNghiep.Common.CommonConstants.USER_SESSION];
+            long idbaiviet = long.Parse(IDBaiViet);
+            baivietCMT.sNoiDung = sNoiDung;
+            baivietCMT.IDBaiViet = idbaiviet;
+            baivietCMT.dNgayTao = DateTime.Now;
+            baivietCMT.sTenNguoiDung = userSession.HoTen;
+            baivietCMT.bStatus = true;
+            var id = new BaiVietCommentDAO().InsertCMT(baivietCMT);
+            if (id > 0)
+            {
+                return Json(new
+                {
+                    status = true
+                });
+            }
+            else
+                return Json(new
+                {
+                    status = false
+                });
         }
     }
 }

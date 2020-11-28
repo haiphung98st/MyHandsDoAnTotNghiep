@@ -2,6 +2,7 @@
 using Model.DAO;
 using Model.EF;
 using MyHandsDoAnTotNghiep.Models;
+using MyHandsDoAnTotNghiep.NganLuong;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,6 +17,10 @@ namespace MyHandsDoAnTotNghiep.Controllers
     public class GioHangItemController : Controller
     {
         private const string CartSession = "CartSession";
+        private string MerchantID = ConfigurationManager.AppSettings["MerchantID"].ToString();
+        private string MerchantPassword = ConfigurationManager.AppSettings["MerchantPassword"].ToString();
+        private string MerchantEmail = ConfigurationManager.AppSettings["MerchantEmail"].ToString();
+        private string currentLink = ConfigurationManager.AppSettings["currentLink"].ToString();
         // GET: GioHangItem
         public ActionResult Index()
         {
@@ -28,16 +33,39 @@ namespace MyHandsDoAnTotNghiep.Controllers
             }
             return View(cartlist);
         }
+        protected void SetAlert(string message, string type)
+        {
+            TempData["AlertMessage"] = message;
+            if (type == "success")
+            {
+                TempData["AlertType"] = "alert-success";
+            }
+            else if (type == "warning")
+            {
+                TempData["AlertType"] = "alert-warning";
+            }
+            else if (type == "error")
+            {
+                TempData["AlertType"] = "alert-danger";
+            }
+        }
         public JsonResult Update(String cartModel)
         {
             var jsonCart = new JavaScriptSerializer().Deserialize<List<GioHangItems>>(cartModel);
             var sessionCart = (List<GioHangItems>)Session[CartSession];
             foreach(var item in sessionCart)
             {
+               // var iQuantity = new SanPhamDAO().getQuantityByID(item.SanPham.ID);  
                 var jsonItem = jsonCart.SingleOrDefault(x => x.SanPham.ID == item.SanPham.ID);
-                if (jsonItem != null)
+                if (jsonItem != null && jsonItem.SoLuong<= item.SanPham.iSoLuong)
                 {
                     item.SoLuong = jsonItem.SoLuong;
+                }
+                else
+                {
+                    string outOfquantity = "Sản phẩm " + item.SanPham.sTenSanPham + " chỉ còn " + item.SanPham.iSoLuong ;
+                    //TempData["msg"] = "<script>alert('Sản phẩm "+item.SanPham.sTenSanPham +" chỉ còn "+iQuantity+"');</script>";
+                    SetAlert(outOfquantity, "error");
                 }
             }
             Session[CartSession] = sessionCart;
@@ -77,7 +105,8 @@ namespace MyHandsDoAnTotNghiep.Controllers
         }
 
         [HttpPost]
-        public ActionResult Payment(string sTenNguoiNhan, string sEmail, string sSoDienThoai, string sDiaChi,FormCollection formcollection)
+        [ValidateAntiForgeryToken]
+        public ActionResult Payment(string sTenNguoiNhan, string sEmail, string sSoDienThoai, string sDiaChi,string FormOfPayment,string sBankCode, FormCollection formcollection)
         {
             var order = new tbl_HoaDon();
             var userSession = (UserLogin)Session[Common.CommonConstants.USER_SESSION];
@@ -88,27 +117,18 @@ namespace MyHandsDoAnTotNghiep.Controllers
             if (userSession != null)
             {
 
-                order.dNgayTao = DateTime.Now;
                 order.IDKhachHang = userSession.UserID;
-                order.sTenNguoiNhan = userSession.HoTen;
-                order.sDiaChi = userSession.DiaChi + ", "+diachi;
-                order.sEmailNguoiNhan = userSession.Email;
-                order.iMaTrangThai = 1;
             }
-            else
-            {
-                order.dNgayTao = DateTime.Now;
-                order.sTenNguoiNhan = sTenNguoiNhan;
-                order.sEmailNguoiNhan = sEmail;
-                order.sSDTnguoiNhan = sSoDienThoai;
-                order.sDiaChi = sDiaChi+", "+ TenQuanHuyen + ", " + TenTinhThanh;
-                order.iMaTrangThai = 1;
-            }
-            
+            order.dNgayTao = DateTime.Now;
+            order.sTenNguoiNhan = sTenNguoiNhan;
+            order.sEmailNguoiNhan = sEmail;
+            order.sSDTnguoiNhan = sSoDienThoai;
+            order.sDiaChi = sDiaChi+", "+ TenQuanHuyen + ", " + TenTinhThanh;
+            order.sFormOfPayment = FormOfPayment;
+            order.iMaTrangThai = 1;
             
             try
             {
-                
                 var id = new HoaDonDAO().Insert(order);
                 var cart = (List<GioHangItems>)Session[CartSession];
                 var detailDao = new Model.DAO.ChiTietHoaDonDAO();
@@ -119,9 +139,9 @@ namespace MyHandsDoAnTotNghiep.Controllers
                     var orderDetail = new tbl_ChiTietHoaDon();
                     orderDetail.IDSanPham = item.SanPham.ID;
                     orderDetail.IDHoaDon = id;
-
+                    orderDetail.sGhiChu = item.sGhiChu;
                     orderDetail.iSoLuong = item.SoLuong;
-                    if (item.SanPham.dGiaKhuyenMai != null)
+                    if (item.SanPham.dGiaKhuyenMai != null && item.SanPham.dGiaKhuyenMai != 0)
                     {
                         orderDetail.dDonGia = item.SanPham.dGiaKhuyenMai;
                     }
@@ -130,7 +150,7 @@ namespace MyHandsDoAnTotNghiep.Controllers
                         orderDetail.dDonGia = item.SanPham.dGiaBan;
                     }
                     detailDao.Insert(orderDetail);
-                    if (item.SanPham.dGiaKhuyenMai != null)
+                    if (item.SanPham.dGiaKhuyenMai != null && item.SanPham.dGiaKhuyenMai != 0)
                     {
                         total += (item.SanPham.dGiaKhuyenMai.GetValueOrDefault(0) * item.SoLuong);
                     }
@@ -141,7 +161,43 @@ namespace MyHandsDoAnTotNghiep.Controllers
                    divsp.divSanPham(item.SanPham.ID,item.SoLuong);
                     //ViewBag.Total = total;
 
-                }                
+                }
+                if (!FormOfPayment.Equals("COD") )
+                {
+                    RequestInfo info = new RequestInfo();
+                    info.Merchant_id = MerchantID;
+                    info.Merchant_password = MerchantPassword;
+                    info.Receiver_email = MerchantEmail;
+
+                    info.cur_code = "vnd";
+                    info.bank_code = sBankCode;
+
+                    info.Order_code = id.ToString();
+                    info.Total_amount = total.ToString();
+                    info.fee_shipping = "0";
+                    info.Discount_amount = "0";
+                    info.order_description = "Thanh toán đơn hàng Myhands Store";
+                    info.return_url = currentLink + "/hoan-thanh";
+                    info.cancel_url = currentLink + "/loi-thanh-toan";
+
+                    info.Buyer_fullname = sTenNguoiNhan;
+                    info.Buyer_email = sEmail;
+                    info.Buyer_mobile = sSoDienThoai;
+
+                    APICheckoutV3 objNLChecout = new APICheckoutV3();
+                    ResponseInfo result = objNLChecout.GetUrlCheckout(info, FormOfPayment);
+
+                    if (result.Error_code == "00")
+                    {
+                        Response.Redirect(result.Checkout_url);
+                        //return Redirect("/hoan-thanh");
+                    }
+                    else
+                    {
+                        return Redirect("/loi-thanh-toan");
+                    }
+
+                }
                 string content = System.IO.File.ReadAllText(Server.MapPath("~/Assets/Client/Templates/MailForm.html"));
 
                 content = content.Replace("{{sTenNguoiNhan}}", sTenNguoiNhan);
@@ -156,7 +212,8 @@ namespace MyHandsDoAnTotNghiep.Controllers
             }
             catch (Exception ex)
             {
-                //ghi log
+                string script = "<script>alert('" + ex.Message + "');</script>";
+                
                 return Redirect("/loi-thanh-toan");
             }
             Session[CartSession] = null;
@@ -165,9 +222,35 @@ namespace MyHandsDoAnTotNghiep.Controllers
 
         public ActionResult Success()
         {
+            var order = new tbl_HoaDon();
+            String Token = Request["token"];
+            if(Token!= null)
+            {
+                long orderID = long.Parse(Request["Order_code"]);
+                RequestCheckOrder info = new RequestCheckOrder();
+                info.Merchant_id = MerchantID;
+                info.Merchant_password = MerchantPassword;
+                info.Token = Token;
+                APICheckoutV3 objNLChecout = new APICheckoutV3();
+                ResponseCheckOrder result = objNLChecout.GetTransactionDetail(info);
+                ViewBag.Message = result.errorCode + result.payerName;
+                order.ID = orderID;
+                order.iStatus = 1;
+                order.iMaTrangThai = 1;
+                new HoaDonDAO().Update(order);
+
+            }
+
             return View();
         }
-        public ActionResult AddToCart(int IDSanPham, int SoLuong)
+        public ActionResult PaymentFail()
+        {
+            //long orderID = long.Parse(Request["Order_code"]);
+
+            //new HoaDonDAO().CancelOrder(orderID);
+            return View();
+        }
+        public ActionResult AddToCart(int IDSanPham, int SoLuong,string sGhiChu)
         {
             var product = new SanPhamDAO().chiTietSanPham(IDSanPham);
             var cartsession = Session[CartSession];
@@ -190,6 +273,7 @@ namespace MyHandsDoAnTotNghiep.Controllers
                     var cartItem = new GioHangItems();
                     cartItem.SanPham = product;
                     cartItem.SoLuong = SoLuong;
+                    cartItem.sGhiChu = sGhiChu;
                     cartlist.Add(cartItem);
                 }
                 // gán vào sesion
@@ -201,6 +285,8 @@ namespace MyHandsDoAnTotNghiep.Controllers
                 var cartItem = new GioHangItems();
                 cartItem.SanPham = product;
                 cartItem.SoLuong = SoLuong;
+                cartItem.sGhiChu = sGhiChu;
+
                 var cartlist = new List<GioHangItems>();
                 cartlist.Add(cartItem);
                 // gán vào sesion

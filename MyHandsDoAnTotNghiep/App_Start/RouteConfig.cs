@@ -22,9 +22,21 @@ namespace MyHandsDoAnTotNghiep
                namespaces: new[] { "MyHandsDoAnTotNghiep.Controllers" }
            );
             routes.MapRoute(
+               name: "Danh muc san pham custom",
+               url: "san-pham-custom/{id}",
+               defaults: new { controller = "CustomOrder", action = "Custom", id = UrlParameter.Optional },
+               namespaces: new[] { "MyHandsDoAnTotNghiep.Controllers" }
+           );
+            routes.MapRoute(
                name: "Tim kiem",
                url: "tim-kiem",
                defaults: new { controller = "Product", action = "Search", id = UrlParameter.Optional },
+               namespaces: new[] { "MyHandsDoAnTotNghiep.Controllers" }
+           );
+            routes.MapRoute(
+               name: "dat hang yc",
+               url: "dathangyc",
+               defaults: new { controller = "CustomOrder", action = "Index", id = UrlParameter.Optional },
                namespaces: new[] { "MyHandsDoAnTotNghiep.Controllers" }
            );
             routes.MapRoute(
@@ -126,6 +138,12 @@ namespace MyHandsDoAnTotNghiep
               name: "thanh toan thanh cong",
               url: "hoan-thanh",
               defaults: new { controller = "GioHangItem", action = "Success", id = UrlParameter.Optional },
+              namespaces: new[] { "MyHandsDoAnTotNghiep.Controllers" }
+          );
+            routes.MapRoute(
+              name: "thanh toan that bai",
+              url: "loi-thanh-toan",
+              defaults: new { controller = "GioHangItem", action = "PaymentFail", id = UrlParameter.Optional },
               namespaces: new[] { "MyHandsDoAnTotNghiep.Controllers" }
           );
             routes.MapRoute(

@@ -27,5 +27,9 @@ namespace Model.DAO
             }
             
         }
+        public string SumOrder()
+        {
+            return db.tbl_ChiTietHoaDon.Sum(x => x.dDonGia * x.iSoLuong).GetValueOrDefault().ToString("N0");
+        }
     }
 }

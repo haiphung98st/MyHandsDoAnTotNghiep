@@ -12,6 +12,7 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
     public class DanhMucSanPhamController : BaseController
     {
         // GET: Admin/DanhMucSanPham
+        [CheckPermission(RoleID = "VIEW_pCATEGORY")]
         public ActionResult Index(string SearchDanhMuc, int page = 1, int pagesize = 10)
         {
             var dao = new DanhMucSPDAO();
@@ -20,11 +21,15 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
             return View(model);
         }
         [HttpGet]
+        [CheckPermission(RoleID = "ADD_pCATEGORY")]
+
         public ActionResult Create()
         {
             return View();
         }
         [HttpPost]
+        [CheckPermission(RoleID = "ADD_pCATEGORY")]
+
         public ActionResult Create(tbl_DanhMucSanPham model)
         {
             if (ModelState.IsValid)
@@ -37,6 +42,8 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
             return View();
         }
         [HttpGet]
+        [CheckPermission(RoleID = "EDIT_pCATEGORY")]
+
         public ActionResult Edit(long id)
         {
             var dao = new DanhMucSPDAO();
@@ -45,6 +52,8 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
             return View(danhmucsanpham);
         }
         [HttpPost]
+        [CheckPermission(RoleID = "EDIT_pCATEGORY")]
+
         public ActionResult Edit(tbl_DanhMucSanPham model,FormCollection formcollection)
         {
             if (ModelState.IsValid)
@@ -61,6 +70,8 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
             }
             return View();
         }
+        [CheckPermission(RoleID = "DELETE_pCATEGORY")]
+
         public ActionResult Delete(int id)
         {
             new DanhMucSPDAO().Delete(id);

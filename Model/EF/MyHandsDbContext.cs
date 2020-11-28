@@ -40,6 +40,14 @@ namespace Model.EF
         public virtual DbSet<tbl_ChiTietPhieuYC> tbl_ChiTietPhieuYC { get; set; }
         public virtual DbSet<tbl_ChiTietDonNhapHang> tbl_ChiTietDonNhapHang { get; set; }
         public virtual DbSet<tbl_Notification> tbl_Notification { get; set; }
+        public virtual DbSet<tbl_HinhAnhSP> tbl_HinhAnhSP { get; set; }
+        public virtual DbSet<tbl_SanPhamComment> tbl_SanPhamComment { get; set; }
+        public virtual DbSet<tbl_BaiVietComment> tbl_BaiVietComment { get; set; }
+        public virtual DbSet<tbl_DanhMucMauSanPham> tbl_DanhMucMauSanPham { get; set; }
+        public virtual DbSet<tbl_SPmauOption> tbl_SPmauOption { get; set; }
+        public virtual DbSet<tbl_OptionSPMau> tbl_OptionSPMau { get; set; }
+        public virtual DbSet<tbl_OptionValue> tbl_OptionValue { get; set; }
+        public virtual DbSet<tbl_SanPhamMau> tbl_SanPhamMau { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -168,7 +176,11 @@ namespace Model.EF
                 .IsUnicode(false);
         }
 
-        public System.Data.Entity.DbSet<Model.ViewModel.PhieuYeuCauViewModel> PhieuYeuCauViewModels { get; set; }
+        //public System.Data.Entity.DbSet<MyHandsDoAnTotNghiep.Models.LoginModel> LoginModels { get; set; }
+
+        //public System.Data.Entity.DbSet<MyHandsDoAnTotNghiep.Models.ChangePasswordModel> ChangePasswordModels { get; set; }
+
+        //public System.Data.Entity.DbSet<Model.ViewModel.PhieuYeuCauViewModel> PhieuYeuCauViewModels { get; set; }
 
         //public System.Data.Entity.DbSet<Model.ViewModel.HoaDonViewModel> HoaDonViewModels { get; set; }
 

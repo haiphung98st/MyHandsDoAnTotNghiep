@@ -3,9 +3,15 @@
     ViewBag.Title = Model.sTenSanPham;
     Layout = "~/Views/Shared/_Layout.cshtml";
     var category = (Model.EF.tbl_DanhMucSanPham)ViewBag.Category;
+    var listmoreImage = (List<Model.EF.tbl_HinhAnhSP>)ViewBag.MoreImage;
+    var listComment = (List<Model.EF.tbl_SanPhamComment>)ViewBag.SPComment;
+    var UserSession = (UserLogin)Session[MyHandsDoAnTotNghiep.Common.CommonConstants.USER_SESSION];
+
     var url = "https://localhost:44375/chi-tiet/" + Model.sTenSanPhamMeta + "-" + Model.ID;
 }
-
+@section jsFooter{
+    <script src="~/Assets/Client/js/controller/addCommentJS.js"></script>
+}
 
 <div class="container single_product_container">
     <div class="row">
@@ -28,20 +34,48 @@
         <div class="col-lg-7">
             <div class="single_product_pics">
                 <div class="row">
-                    <div class="col-lg-3 thumbnails_col order-lg-1 order-2">
-                        <div class="single_product_thumbnails">
-                            <ul>
-                                <li><img src="@Model.sImages" alt="" data-image="@Model.sImages"></li>
-                                <li class="active"><img src="@Model.sImages" alt="" data-image="@Model.sImages"></li>
-                                <li><img src="@Model.sImages" alt="" data-image="@Model.sImages"></li>
-                            </ul>
+                    @if (listmoreImage.Count > 0)
+                    {
+                        var fitstIMG = listmoreImage.FirstOrDefault().sDuongDan;
+                        <div class="col-lg-3 thumbnails_col order-lg-1 order-2">
+                            <div class="single_product_thumbnails">
+                                <ul>
+
+                                    @foreach (var i in listmoreImage)
+                                    {
+                                        <li><img src="@i.sDuongDan" alt="" data-image="@i.sDuongDan"></li>
+
+                                    }
+
+                                    @*<li><img src="@Model.sImages" alt="" data-image="@Model.sImages"></li>
+                                        <li class="active"><img src="@Model.sImages" alt="" data-image="@Model.sImages"></li>
+                                        <li><img src="@Model.sImages" alt="" data-image="@Model.sImages"></li>*@
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-9 image_col order-lg-2 order-1">
-                        <div class="single_product_image">
-                            <div class="single_product_image_background" style="background-image:url(@Model.sImages)"></div>
+                        <div class="col-lg-9 image_col order-lg-2 order-1">
+                            <div class="single_product_image">
+                                <div class="single_product_image_background" style="background-image:url(@fitstIMG)"></div>
+                            </div>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="col-lg-3 thumbnails_col order-lg-1 order-2">
+                            <div class="single_product_thumbnails">
+                                <ul>
+                                    <li><img src="@Model.sImages" alt="" data-image="@Model.sImages"></li>
+                                    <li class="active"><img src="@Model.sImages" alt="" data-image="@Model.sImages"></li>
+                                    <li><img src="@Model.sImages" alt="" data-image="@Model.sImages"></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-9 image_col order-lg-2 order-1">
+                            <div class="single_product_image">
+                                <div class="single_product_image_background" style="background-image:url(@Model.sImages)"></div>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -49,6 +83,8 @@
             <div class="product_details">
                 <div class="product_details_title">
                     <h2>@Model.sTenSanPham</h2>
+                    <input type="hidden" id="idSanPham" name="idSanPham" value="@Model.ID">
+
                     <p>@Model.sMoTa</p>
                 </div>
 
@@ -57,7 +93,7 @@
                     <div class="free_delivery d-flex flex-row align-items-center justify-content-center">
                         <span class="ti-truck"></span><span>free delivery</span>
                     </div>
-                    <div class="product_price">@(Model.dGiaKhuyenMai.HasValue ? Model.dGiaKhuyenMai.Value.ToString("N0") : "Liên hệ")<span>@(Model.dGiaBan.HasValue ? Model.dGiaBan.Value.ToString("N0") : " ")</span></div>
+                    <div class="product_price">@(Model.dGiaKhuyenMai.HasValue&&(Model.dGiaKhuyenMai.ToString()!="0")? Model.dGiaKhuyenMai.Value.ToString("N0"):Model.dGiaBan.Value.ToString("N0"))<span>@(Model.dGiaKhuyenMai.HasValue&&(Model.dGiaKhuyenMai.ToString() != "0") ? Model.dGiaBan.Value.ToString("N0") : " ")</span></div>
                 }
                 else
                 {
@@ -65,27 +101,27 @@
 
                 }
                 @*<ul class="star_rating">
-            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-            <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-        </ul>*@
+                        <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                        <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                        <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                        <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                        <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+                    </ul>*@
                 @*<div class="product_color">
-            <span>Select Color:</span>
-            <ul>
-                <li style="background: #e54e5d"></li>
-                <li style="background: #252525"></li>
-                <li style="background: #60b3f3"></li>
-            </ul>
-        </div>*@
+                        <span>Select Color:</span>
+                        <ul>
+                            <li style="background: #e54e5d"></li>
+                            <li style="background: #252525"></li>
+                            <li style="background: #60b3f3"></li>
+                        </ul>
+                    </div>*@
                 <div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
                     @*<span>Số lượng:</span>
-            <div class="quantity_selector">
-                <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                <span id="quantity_value">1</span>
-                <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
-            </div>*@
+                        <div class="quantity_selector">
+                            <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                            <span id="quantity_value">1</span>
+                            <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                        </div>*@
                     @if (Model.iSoLuong > 0)
                     {
                         <div class="red_button " style="padding:15px; margin-left:15px"><a href="/them-vao-gio?IDSanPham=@Model.ID&SoLuong=1">Thêm vào giỏ</a></div>}
@@ -125,32 +161,32 @@
                                 <h4>Mô tả sản phẩm</h4>
                             </div>
                             @Html.Raw(Model.sChiTietSanPham)
-                            
+
 
                             @*<div class="tab_text_block">
-                                <h2>@Model.sTenSanPham</h2>
-                                <p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
-                            </div>
-                            <div class="tab_image">
-                                <img src="@Model.sImages" alt="">
-                            </div>
-                            <div class="tab_text_block">
-                                <h2>@Model.sTenSanPham</h2>
-                                <p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
-                            </div>*@
+                                    <h2>@Model.sTenSanPham</h2>
+                                    <p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
+                                </div>
+                                <div class="tab_image">
+                                    <img src="@Model.sImages" alt="">
+                                </div>
+                                <div class="tab_text_block">
+                                    <h2>@Model.sTenSanPham</h2>
+                                    <p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
+                                </div>*@
                         </div>
                         @*<div class="col-lg-5 offset-lg-2 desc_col">
-                            <div class="tab_image">
-                                <img src="@Model.sImages" alt="">
-                            </div>
-                            <div class="tab_text_block">
-                                <h2>@Model.sTenSanPham</h2>
-                                <p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
-                            </div>
-                            <div class="tab_image desc_last">
-                                <img src="@Model.sImages" alt="">
-                            </div>
-                        </div>*@
+                                <div class="tab_image">
+                                    <img src="@Model.sImages" alt="">
+                                </div>
+                                <div class="tab_text_block">
+                                    <h2>@Model.sTenSanPham</h2>
+                                    <p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
+                                </div>
+                                <div class="tab_image desc_last">
+                                    <img src="@Model.sImages" alt="">
+                                </div>
+                            </div>*@
                     </div>
                 </div>
 
@@ -171,14 +207,83 @@
 
                 <div id="tab_3" class="tab_container">
                     <div class="row">
+                        <div class="col-lg-6 add_review_col">
+                            <div class="add_review" style="margin-top:0;">
+                                @if (UserSession == null)
+                                {
+                                    <a href="/User/Login" class="btn btn-primary" style="margin-left: 180px"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng nhập để bình luận</a>
+
+                                }
+                                else
+                                {
+                                    <form>
+                                        <div>
+                                            @*<h1>Your Rating:</h1>
+                                            <ul class="user_star_rating">
+                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+                                            </ul>*@
+                                            <textarea id="sNoiDungCMT" class="input_review" name="sNoiDungCMT" placeholder="Nhập nội dung bình luận" rows="4" required data-error="Hãy nhập nội dung bình luận"></textarea>
+                                        </div>
+                                        <div class="text-left text-sm-right">
+                                            <button id="btn_ProductCMT" type="submit" class="red_button review_submit_btn trans_300" value="Bình luận">Bình luận</button>
+                                        </div>
+                                    </form>
+                                }
+                                <h1 style="padding-left:80px">-------------- Hoặc --------------</h1>
+
+                                <div class="fb-comments" data-href="@url" data-numposts="5" data-width="100%"></div>
+                            </div>
+
+                        </div>
+
+
 
                         <!-- User Reviews -->
 
-                        <div class=" reviews_col">
-                            <div class="fb-comments" data-href="@url" data-numposts="5" data-width="100%"></div>
+                        <div class="col-lg-6 reviews_col">
+                            <div class="tab_title reviews_title">
+                                <h4>Số lượt đánh giá (@listComment.Count)</h4>
+                            </div>
 
+                            <!-- User Review -->
+                            @if (listComment.Count > 0)
+
+                            {
+                                foreach (var icmt in listComment)
+                                {
+                                    <div class="user_review_container d-flex flex-column flex-sm-row">
+                                        <div class="user">
+                                            <div class="user_pic"></div>
+                                            @*<div class="user_rating">
+                                                <ul class="star_rating">
+                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                    <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+                                                </ul>
+                                            </div>*@
+                                        </div>
+                                        <div class="review">
+                                            <div class="review_date">@(icmt.dNgayTao.ToString()!= null? icmt.dNgayTao.ToString("dd/MM/yyyy") : "")</div>
+                                            <div class="user_name">@icmt.sTenNguoiDung</div>
+                                            <p>@icmt.sNoiDung</p>
+                                        </div>
+                                    </div>
+                                }
+
+                            }
 
                         </div>
+
+
+
+
+                    </div>
                 </div>
 
             </div>

@@ -25,6 +25,8 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
         [CheckPermission(RoleID = "ADD_USER")]
         public ActionResult Create()
         {
+            setViewBag();
+
             return View();
         }
         [HttpPost]
@@ -56,10 +58,12 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
                     var useradd = new tbl_TaiKhoan();
                     useradd.sTenTaiKhoan = user.sTenTaiKhoan;
                     useradd.sMatKhau = Encryptor.MD5Hash(user.sMatKhau);
+                    useradd.sHoTen = user.sHoTen;
                     useradd.sEmail = user.sEmail;
                     useradd.sDiaChi = user.sDiaChi;
                     useradd.sSDT = user.sSDT;
                     useradd.dNgayTao = DateTime.Now;
+                    useradd.sQuyen = user.sQuyen;
                     useradd.bStatus = true;
                     var result = dao.Insert(useradd);
                     if (result > 0)
@@ -93,6 +97,8 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
         public ActionResult Edit(int id)
         {
             var user = new UserDao().viewDetailByID(id);
+            setViewBag(user.ID);
+
             return View(user);
         }
         [HttpPost]
@@ -143,6 +149,10 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
                 status = result
             }); 
         }
-
+        public void setViewBag(long? selectedID = null)
+        {
+            var dao = new UserDao();
+            ViewBag.sQuyen = new SelectList(dao.ListQuyen(), "ID", "sTenQuyen", selectedID);
+        }
     }
 }

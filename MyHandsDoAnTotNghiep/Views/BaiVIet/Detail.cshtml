@@ -3,8 +3,13 @@
     ViewBag.Title = "Detail";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var url = "https://localhost:44375/bai-viet/" + Model.sTenTieuDecMeta + "-" + Model.IDBaiViet;
-}
+    var UserSession = (UserLogin)Session[MyHandsDoAnTotNghiep.Common.CommonConstants.USER_SESSION];
+    var listComment = (List<Model.EF.tbl_BaiVietComment>)ViewBag.BaiVietCMT;
 
+}
+@section jsFooter{
+    <script src="~/Assets/Client/js/controller/addCommentJS.js"></script>
+}
 <div style="height:200px"></div>
 <div class="container">
     <div class="row">
@@ -12,6 +17,8 @@
 
             <p class="mb-5">
                 <img src="@Model.sImages" alt="Image" class="img-fluid">
+                <input type="hidden" id="idBaiViet" name="idBaiViet" value="@Model.IDBaiViet">
+
             </p>
             <h1 class="mb-4">
                 @Model.sTieuDe
@@ -43,13 +50,81 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-lg-6 add_review_col">
+            <div class="add_review" style="margin-top:0;">
+                @if (UserSession == null)
+                {
+                    <a href="/User/Login" class="btn btn-primary" style="margin-left: 180px"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng nhập để bình luận</a>
+
+                }
+                else
+                {
+                    <form>
+                        <div>
+                            @*<h1>Your Rating:</h1>
+                            <ul class="user_star_rating">
+                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+                            </ul>*@
+                            <textarea id="sNoiDungCMTBaiViet" class="input_review" name="sNoiDungCMTBaiViet" placeholder="Nhập nội dung bình luận" rows="4"></textarea>
+                        </div>
+                        <div class="text-left text-sm-right">
+                            <button id="btn_ContentCMT" type="submit" class="red_button review_submit_btn trans_300" value="Bình luận">Bình luận</button>
+                        </div>
+                    </form>
+                }
+                <h1 style="padding-left:80px">-------------- Hoặc --------------</h1>
+
+                <div class="fb-comments" data-href="@url" data-numposts="5" data-width="100%"></div>
+            </div>
+
+        </div>
+
+
 
         <!-- User Reviews -->
 
-        <div class=" reviews_col">
-            <div class="fb-comments" data-href="@url" data-numposts="5" data-width="100%"></div>
+        <div class="col-lg-6 reviews_col">
+            <div class="tab_title reviews_title">
+                <h4>Số lượt đánh giá (@listComment.Count)</h4>
+            </div>
 
+            <!-- User Review -->
+            @if (listComment.Count > 0)
+
+            {
+                foreach (var icmt in listComment)
+                {
+                    <div class="user_review_container d-flex flex-column flex-sm-row">
+                        <div class="user">
+                            <div class="user_pic"></div>
+                            @*<div class="user_rating">
+                                <ul class="star_rating">
+                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                    <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+                                </ul>
+                            </div>*@
+                        </div>
+                        <div class="review">
+                            <div class="review_date">@(icmt.dNgayTao.ToString()!= null? icmt.dNgayTao.ToString("dd/MM/yyyy") : "")</div>
+                            <div class="user_name">@icmt.sTenNguoiDung</div>
+                            <p>@icmt.sNoiDung</p>
+                        </div>
+                    </div>
+                }
+
+            }
 
         </div>
+
+
+
+
     </div>
 </div>

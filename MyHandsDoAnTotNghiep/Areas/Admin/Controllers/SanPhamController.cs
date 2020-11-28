@@ -12,6 +12,8 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
     public class SanPhamController : BaseController
     {
         // GET: Admin/SanPham
+        [CheckPermission(RoleID = "VIEW_PRODUCT")]
+
         public ActionResult Index(string SearchSanPham, int page = 1, int pagesize = 5)
         {
             var dao = new SanPhamDAO();
@@ -20,11 +22,14 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
             return View(model);
         }
         [HttpGet]
+        [CheckPermission(RoleID = "ADD_PRODUCT")]
+
         public ActionResult Create()
         {
             setViewBag();
             return View();
         }
+        [CheckPermission(RoleID = "EDIT_PRODUCT")]
 
         public ActionResult Edit(long id)
         {
@@ -36,6 +41,8 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
         }
         
         [HttpPost, ValidateInput(false)]
+        [CheckPermission(RoleID = "EDIT_PRODUCT")]
+
         public ActionResult Edit(tbl_SanPham model)
         {
             if (ModelState.IsValid)
@@ -55,6 +62,8 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
             return View();
         }
         [HttpPost, ValidateInput(false)]
+        [CheckPermission(RoleID = "ADD_PRODUCT")]
+
         public ActionResult Create(tbl_SanPham model)
         {
             if (ModelState.IsValid)
@@ -72,6 +81,8 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
             var dao = new DanhMucSPDAO();
             ViewBag.IDdanhmuc = new SelectList(dao.ListAll(), "IDDanhMuc", "sTenDanhMuc", selectedID);
         }
+        [CheckPermission(RoleID = "DELETE_PRODUCT")]
+
         public ActionResult Delete(int id)
         {
             new SanPhamDAO().Delete(id);

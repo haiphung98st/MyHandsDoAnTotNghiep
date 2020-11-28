@@ -34,6 +34,8 @@ namespace Model.ViewModel
         public int? iSoLuong { get; set; }
         [Display(Name = "Trạng thái")]
         public string sTenTrangThai { get; set; }
+        [Display(Name = "Ghi chú")]
+        public string sGhiChu { get; set; }
         [Display(Name = "Tên sản phẩm")]
         public string sTenSanPham { get; set; }
     }

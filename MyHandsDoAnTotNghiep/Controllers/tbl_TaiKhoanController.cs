@@ -17,10 +17,13 @@ namespace MyHandsDoAnTotNghiep.Controllers
         private MyHandsDbContext db = new MyHandsDbContext();
 
         // GET: api/tbl_TaiKhoan
+        //[Authorize(Roles = "admin")]
+
         public IQueryable<tbl_TaiKhoan> Gettbl_TaiKhoan()
         {
             return db.tbl_TaiKhoan;
         }
+       // [Authorize(Roles = "admin")]
 
         // GET: api/tbl_TaiKhoan/5
         [ResponseType(typeof(tbl_TaiKhoan))]
@@ -34,6 +37,7 @@ namespace MyHandsDoAnTotNghiep.Controllers
 
             return Ok(tbl_TaiKhoan);
         }
+       // [Authorize(Roles = "admin")]
 
         // PUT: api/tbl_TaiKhoan/5
         [ResponseType(typeof(void))]
@@ -69,6 +73,7 @@ namespace MyHandsDoAnTotNghiep.Controllers
 
             return StatusCode(HttpStatusCode.NoContent);
         }
+       // [Authorize(Roles = "admin")]
 
         // POST: api/tbl_TaiKhoan
         [ResponseType(typeof(tbl_TaiKhoan))]
@@ -84,6 +89,7 @@ namespace MyHandsDoAnTotNghiep.Controllers
 
             return CreatedAtRoute("DefaultApi", new { id = tbl_TaiKhoan.ID }, tbl_TaiKhoan);
         }
+       // [Authorize(Roles = "admin")]
 
         // DELETE: api/tbl_TaiKhoan/5
         [ResponseType(typeof(tbl_TaiKhoan))]

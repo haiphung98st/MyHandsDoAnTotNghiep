@@ -21,5 +21,7 @@ namespace Model.EF
         public int? iSoLuong { get; set; }
 
         public decimal? dDonGia { get; set; }
+        [StringLength(250)]
+        public string sGhiChu { get; set; }
     }
 }

@@ -12,6 +12,7 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
     {
         MyHandsDbContext db = null;
         // GET: Admin/ThongKe
+        [CheckPermission(RoleID = "VIEW_STATISTIC")]
         public ActionResult Index(string SearchSanPham, int page = 1, int pagesize = 4)
         {
             var dao = new SanPhamDAO();
@@ -19,6 +20,8 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
             ViewBag.SearchSanPham = SearchSanPham;
             return View(model);
         }
+        [CheckPermission(RoleID = "VIEW_STATISTIC")]
+
         public ActionResult CanceledOrder(string SearchSanPham, int page = 1, int pagesize = 4)
         {
             var dao = new HoaDonDAO();
@@ -26,6 +29,8 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
             ViewBag.SearchSanPham = SearchSanPham;
             return View(model);
         }
+        [CheckPermission(RoleID = "VIEW_STATISTIC")]
+
         public ActionResult DoanhThu( int page = 1, int pagesize = 4)
         {
             int totalRecord = 0;

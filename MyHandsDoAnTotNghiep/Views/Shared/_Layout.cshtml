@@ -79,13 +79,13 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="top_nav_left">free shipping on all vn orders over $50</div>
+                            @*<div class="top_nav_left">free shipping on all vn orders</div>*@
 
                         </div>
                         <div class="col-md-6 text-right">
                             <div class="top_nav_right">
                                 <ul class="top_nav_menu">
-                                    <li class="language">
+                                    @*<li class="language">
                                         <a href="#">
                                             VN
                                             <i class="fa fa-angle-down"></i>
@@ -93,7 +93,7 @@
                                         <ul class="language_selection">
                                             <li><a href="#">ENG</a></li>
                                         </ul>
-                                    </li>
+                                    </li>*@
                                     @{
 
                                         var session = (UserLogin)Session[MyHandsDoAnTotNghiep.Common.CommonConstants.USER_SESSION];
@@ -280,7 +280,7 @@
             border: 1px solid #9E988B;
         }
 
-        ul#notiContent {
+        #notiContent {
             max-height: 200px;
             overflow: auto;
             padding: 0px;
@@ -288,7 +288,7 @@
             padding-left: 20px;
         }
 
-            ul#notiContent li {
+            #notiContent li {
                 margin: 3px;
                 padding: 6px;
                 background: #fff;

@@ -6,7 +6,21 @@
 }
 
 @section header{
-    Danh sách hàng tồn kho
+   Đơn hàng đã hủy
+}
+@section scripts
+{
+    <script>
+        function Details(id)
+           {
+               $.get("@Url.Action("OrderDetails", "HoaDon")/"+id,
+               function(data) {$('.modal-body').html(data);})
+                $("#myModal").modal("show");
+           }
+        $('#myModal').on('hidden.bs.modal', function (e) {
+            $('.modal-body').html("");
+        });
+    </script>
 }
 @using (Html.BeginForm("CanceledOrder", "ThongKe", FormMethod.Get))
 {
@@ -48,7 +62,11 @@
                         <td>@item.dNgayTao </td>
                         <td>Đã hủy</td>
                         <td>@item.sDiaChi</td>
-
+                        <td>
+                            <a id="@item.ID" onclick="Details(this.id)">
+                                <i class="fas fa-info-circle"></i>
+                            </a>
+                        </td>
 
                     </tr>
                 }
@@ -60,5 +78,20 @@
 
     </div>
 </div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
 
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+
+    </div>
+</div>
 

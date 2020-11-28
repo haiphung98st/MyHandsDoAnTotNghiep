@@ -13,6 +13,7 @@ namespace MyHandsDoAnTotNghiep.Controllers
 {
     public class PersonalController : Controller
     {
+        MyHandsDbContext db = null;
         // GET: Personal
         public ActionResult Index()
         {
@@ -80,26 +81,24 @@ namespace MyHandsDoAnTotNghiep.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult ChangePassword(ChangePasswordModel changePasswordModel)
+        public ActionResult ChangePassword(string sOldPassword, string sNewPassword)
         {
             if (ModelState.IsValid)
             {
                 var session = (UserLogin)Session[CommonConstants.USER_SESSION];
                 var dao = new UserDao();
-                var result = dao.ChangePassword(session.UserName, Encryptor.MD5Hash(changePasswordModel.sOldPassword));
+                var result = dao.ChangePassword(session.UserName, Encryptor.MD5Hash(sOldPassword), Encryptor.MD5Hash(sNewPassword));
                 if (result == 1)
                 {
-                    var user = new tbl_TaiKhoan();
-                    
-                    user.sMatKhau = Encryptor.MD5Hash(changePasswordModel.sNewPassword);
+                    SetAlert("Đổi mật khẩu thành công", "success");
                 }
 
                 else
                 {
-                    ModelState.AddModelError("", "Đổi mật khẩu không thành công");
+                    SetAlert("Đổi mật khẩu thất bại", "error");
                 }
             }
-            return View(changePasswordModel);
+            return View();
         }
         public ActionResult MyContent(int page = 1, int pagesize = 10)
         {
@@ -153,6 +152,7 @@ namespace MyHandsDoAnTotNghiep.Controllers
         }
 
         [HttpPost, ValidateInput(false)]
+        [ValidateAntiForgeryToken]
         public ActionResult EditContent(tbl_BaiViet model,FormCollection formcollection)
         {
             if (ModelState.IsValid)
@@ -229,6 +229,29 @@ namespace MyHandsDoAnTotNghiep.Controllers
             {
                 status = result
             });
+        }
+        public ActionResult OrderDetails(int id, int page = 1, int pageSize = 10)
+        {
+            var hoadon = new HoaDonDAO().viewByHoaDoniD(id);
+            ViewBag.HoaDon = hoadon;
+            int totalRecord = 0;
+            var model = new HoaDonDAO().ListDetailByOrderID(id, ref totalRecord, page, pageSize);
+
+            ViewBag.Total = totalRecord;
+            ViewBag.Page = page;
+
+            int maxPage = 10;
+            int totalPage = 0;
+
+            totalPage = (int)Math.Ceiling((double)(totalRecord / pageSize));
+            ViewBag.TotalPage = totalPage;
+            ViewBag.MaxPage = maxPage;
+            ViewBag.First = 1;
+            ViewBag.Last = totalPage;
+            ViewBag.Next = page + 1;
+            ViewBag.Prev = page - 1;
+
+            return View(model);
         }
     }
 }

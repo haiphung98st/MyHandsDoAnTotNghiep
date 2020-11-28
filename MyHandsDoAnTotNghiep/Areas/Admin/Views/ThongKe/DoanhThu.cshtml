@@ -4,6 +4,18 @@
     ViewBag.Title = "OrderDetails";
     Layout = "~/Areas/Admin/Views/Shared/_Layouts.cshtml";
 }
+@section scripts{
+    <script>
+        function Details(id)
+           {
+               $.get("@Url.Action("OrderDetails", "HoaDon")/"+id,
+               function(data) {$('.modal-body').html(data);})
+                $("#myModal").modal("show");
+           }
+        $('#myModal').on('hidden.bs.modal', function (e) {
+            $('.modal-body').html("");
+        });
+    </script>}
 
 <div class="row">
     <div class="col-lg-12">
@@ -16,28 +28,46 @@
                     <th scope="col">Tổng tiền nhập</th>
                     <th scope="col">Tổng tiền bán</th>
                     <th scope="col">Lợi nhuận</th>
-
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
-
                     <tr id="row_@item.ID">
                         <td>
                         </td>
                         <td>@item.ID</td>
-                        <td>@item.iSoLuong</td>
-                        <td>@item.dGiaNhap</td>
-                        <td>@item.dDongia</td>
-                        <td>@(item.dDongia.Value - item.dGiaNhap.Value)</td>
-
+                        <td>@item.dNgayTao</td>
+                        <td>@(item.dGiaNhap.HasValue?item.dGiaNhap.Value.ToString("N0"):"")</td>
+                        <td>@(item.dDongia.HasValue? item.dDongia.Value.ToString("N0"):"")</td>
+                        <td>@(((item.dDongia) - (item.dGiaNhap)).Value.ToString("N0"))</td>
+                        <td>
+                            <a id="@item.ID" onclick="Details(this.id)">
+                                <i class="fas fa-info-circle"></i>
+                            </a>
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
+    </div>
+</div>
 
 
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
 
     </div>
 </div>

@@ -29,6 +29,10 @@ namespace Model.EF
         public string sEmailNguoiNhan { get; set; }
         [StringLength(250)]
         public string sDiaChi { get; set; }
+        [StringLength(50)]
+        public string sFormOfPayment { get; set; }
+        [StringLength(50)]
+        public string sBankCode { get; set; }
         public int? iStatus { get; set; }
     }
 }

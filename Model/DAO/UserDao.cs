@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using PagedList;
 using Common;
 
+
 namespace Model.DAO
 {
     public class UserDao
@@ -23,8 +24,6 @@ namespace Model.DAO
             db.SaveChanges();
             return entity.ID;
         }
-
-
         public long InsertForFacebook(tbl_TaiKhoan entity)
         {
             var user = db.tbl_TaiKhoan.SingleOrDefault(x => x.sTenTaiKhoan == entity.sTenTaiKhoan);
@@ -40,8 +39,6 @@ namespace Model.DAO
             }
 
         }
-
-
         public bool Update(tbl_TaiKhoan entity)
         {
             try {
@@ -51,6 +48,7 @@ namespace Model.DAO
                 {
                     user.sMatKhau = entity.sMatKhau;
                 }
+                user.sQuyen = entity.sQuyen;
                 user.sDiaChi = entity.sDiaChi;
                 user.sEmail = entity.sEmail;
                 user.sSDT = entity.sSDT;
@@ -83,6 +81,21 @@ namespace Model.DAO
         public tbl_TaiKhoan viewDetailByID(int id)
         {
             return db.tbl_TaiKhoan.Find(id);
+        }
+        public List<tbl_TaiKhoan> ListAll()
+        {
+            var model = (from a in db.tbl_TaiKhoan
+                         select new
+                         {
+                             ID = a.ID,
+                             sTenNguoiDung = a.sHoTen
+                         })
+                         .AsEnumerable().Select(x => new tbl_TaiKhoan()
+                         {
+                             ID = x.ID,
+                             sHoTen = x.sTenNguoiDung
+                         }) ; 
+            return model.ToList();
         }
 
         public List<string> GetListCredential(string userName)
@@ -117,7 +130,7 @@ namespace Model.DAO
             {
                 if(isAdmin == true )
                 {
-                    if((result.sQuyen == CommonConstants.ADMIN_GROUP || result.sQuyen == CommonConstants.MOD_GROUP))
+                    if((result.sQuyen == CommonConstants.ADMIN_GROUP || result.sQuyen == CommonConstants.MOD_GROUP|| result.sQuyen == CommonConstants.CASHIER_GROUP || result.sQuyen == CommonConstants.SALE_GROUP))
                     {
                         if (result.bStatus == false)
                         {
@@ -163,17 +176,21 @@ namespace Model.DAO
             }
         }
 
-        public int ChangePassword(String username,String oldpass)
+        public int ChangePassword(String username,String oldpass, string newpass)
         {
 
            var result = db.tbl_TaiKhoan.SingleOrDefault(x => x.sTenTaiKhoan == username);
+
            if (result.sMatKhau == oldpass)
            {
-            return 1;//đổi mk thành công
+                var user = new tbl_TaiKhoan();
+                result.sMatKhau = newpass;
+                db.SaveChanges();
+                return 1;//đổi mk thành công
            }
            else
            {
-            return 0; //k ko đúng
+                return 0; //k ko đúng
            }
                    
         }
@@ -190,6 +207,10 @@ namespace Model.DAO
                 return false;
             }
            
+        }
+        public List<tbl_PhanQuyen> ListQuyen()
+        {
+            return db.tbl_PhanQuyens.OrderBy(x => x.ID).ToList();
         }
         public bool ChangeStatusUser(long id)
         {

@@ -32,7 +32,7 @@ namespace Model.DAO
             {
                 content.sTenTieuDecMeta = StringHelper.ToUnsignString(content.sTieuDe);
             }
-            content.sImages = "http://192.168.0.107:7500" + content.sImages;
+            //content.sImages = "http://192.168.0.107:7500" + content.sImages;
 
             content.dNgayTao = DateTime.Now;
             content.iViewCount = 0;
@@ -233,7 +233,10 @@ namespace Model.DAO
             return model.ToList();
 
         }
-
+        public int CountContent()
+        {
+            return db.tbl_BaiViet.Count(x=>x.bStatus == true);
+        }
         public bool Delete(int id)
         {
             try

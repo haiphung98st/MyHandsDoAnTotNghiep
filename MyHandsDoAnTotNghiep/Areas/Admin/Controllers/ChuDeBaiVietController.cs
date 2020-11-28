@@ -12,6 +12,7 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
     public class ChuDeBaiVietController : BaseController
     {
         // GET: Admin/ChuDeBaiViet
+        [CheckPermission(RoleID = "VIEW_cCATEGORY")]
         public ActionResult Index(string SearchChuDe, int page = 1, int pagesize = 10)
         {
             var dao = new DanhMucBaiVietDAO();
@@ -20,11 +21,15 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
             return View(model);
         }
         [HttpGet]
+        [CheckPermission(RoleID = "ADD_cCATEGORY")]
+
         public ActionResult Create()
         {
             return View();
         }
         [HttpPost]
+        [CheckPermission(RoleID = "ADD_cCATEGORY")]
+
         public ActionResult Create(tbl_ChuDe model)
         {
             if (ModelState.IsValid)
@@ -37,6 +42,8 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
             return View();
         }
         [HttpGet]
+        [CheckPermission(RoleID = "EDIT_cCATEGORY")]
+
         public ActionResult Edit(long id)
         {
             var dao = new DanhMucBaiVietDAO();
@@ -45,6 +52,8 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
             return View(danhmucsanpham);
         }
         [HttpPost]
+        [CheckPermission(RoleID = "EDIT_cCATEGORY")]
+
         public ActionResult Edit(tbl_ChuDe model, FormCollection formcollection)
         {
             if (ModelState.IsValid)
@@ -61,6 +70,8 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
             }
             return View();
         }
+        [CheckPermission(RoleID = "DELETE_cCATEGORY")]
+
         public ActionResult Delete(int id)
         {
             new DanhMucBaiVietDAO().Delete(id);

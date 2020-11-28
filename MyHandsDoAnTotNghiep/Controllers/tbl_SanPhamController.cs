@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Model.EF;
+//using MyHandsDoAnTotNghiep.Common;
 
 namespace MyHandsDoAnTotNghiep.Controllers
 {
@@ -18,12 +19,14 @@ namespace MyHandsDoAnTotNghiep.Controllers
 
         // GET: api/tbl_SanPham
         //[Route("api/products/getAllProduct")]
+        //[Authorize(Roles = "admin")]
         [HttpGet]
         public IQueryable<tbl_SanPham> Gettbl_SanPham()
         {
             return db.tbl_SanPham;
         }
         //[Route("api/products/getProductByID/{id}")]
+        //[Authorize(Roles = "admin")]
         [HttpGet]
         // GET: api/tbl_SanPham/5
         [ResponseType(typeof(tbl_SanPham))]
@@ -37,7 +40,8 @@ namespace MyHandsDoAnTotNghiep.Controllers
 
             return Ok(tbl_SanPham);
         }
-        
+        //[Authorize(Roles = "admin")]
+
         [HttpPut]
         // PUT: api/tbl_SanPham/5
         [ResponseType(typeof(void))]
@@ -74,7 +78,8 @@ namespace MyHandsDoAnTotNghiep.Controllers
 
             return StatusCode(HttpStatusCode.NoContent);
         }
-        
+        //[Authorize(Roles = "admin")]
+
         [HttpPost]
         // POST: api/tbl_SanPham
         [ResponseType(typeof(tbl_SanPham))]
@@ -91,6 +96,8 @@ namespace MyHandsDoAnTotNghiep.Controllers
             return CreatedAtRoute("DefaultApi", new { id = tbl_SanPham.ID }, tbl_SanPham);
         }
         //[Route("api/products/deleteProductByID/{id}")]
+        //[Authorize(Roles = "admin")]
+
         [HttpDelete]
         
         // DELETE: api/tbl_SanPham/5

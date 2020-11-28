@@ -13,7 +13,8 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
     public class PhieuYeuCauNhapController : BaseController
     {
         private const string SESSION_PRODUCT_YC = "SESSION_PRODUCT_YC";
-        // GET: Admin/PhieuYeuCauNhap
+        // GET: Admin/BangKeMuaHang
+
         public ActionResult Index( int page = 1, int pagesize = 5)
         {
             int totalRecord = 0;
@@ -63,6 +64,7 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
                 var id = new PhieuYeuCauDAO().Insert(phieuyeucau);
                 var phieuyeucaulist = (List<PhieuYeuCauViewModel>)Session[SESSION_PRODUCT_YC];
                 var detailDao = new Model.DAO.ChiTietPhieuYCDAO();
+                var addquantity = new SanPhamDAO();
                 foreach (var item in phieuyeucaulist)
                 {
                     var phieuyeucaudetail = new tbl_ChiTietPhieuYC();
@@ -70,6 +72,7 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
                     phieuyeucaudetail.IDPhieuYeuCau = id;
                     phieuyeucaudetail.iSoLuongYC = item.iSoLuongYC;
                     detailDao.Insert(phieuyeucaudetail);
+                    addquantity.addquantitySanPham(item.sanPham.ID, item.iSoLuongYC);
                 }
             }
             catch (Exception ex)

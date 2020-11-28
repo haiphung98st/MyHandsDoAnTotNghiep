@@ -23,12 +23,27 @@ namespace Model.DAO
             return order.ID;
         }
 
-        public IEnumerable<tbl_HoaDon> ListAllPaging(string SearchHoaDon, int page, int pageSize)
+        public IEnumerable<tbl_HoaDon> ListAllPaging(string SearchHoaDon, string dateOfOrder, int page, int pageSize)
         {
             IQueryable<tbl_HoaDon> model = db.tbl_HoaDon;
-            if (!string.IsNullOrEmpty(SearchHoaDon))
+            if (!string.IsNullOrEmpty(SearchHoaDon) && string.IsNullOrEmpty(dateOfOrder))
             {
                 model = model.Where(x => x.sTenNguoiNhan.Contains(SearchHoaDon));
+            }
+            if (!string.IsNullOrEmpty(dateOfOrder) && string.IsNullOrEmpty(SearchHoaDon))
+            {
+                string[] datesplit = dateOfOrder.Split('-');
+                var month = datesplit[1];
+                var year = datesplit[0];
+                model = model.Where(x => x.dNgayTao.Value.Month.ToString().Contains(month) && x.dNgayTao.Value.Year.ToString().Contains(year));
+            }
+            if(!string.IsNullOrEmpty(dateOfOrder) && !string.IsNullOrEmpty(SearchHoaDon))
+            {
+                string[] datesplit = dateOfOrder.Split('-');
+                var month = datesplit[1];
+                var year = datesplit[0];
+                model = model.Where(x => x.dNgayTao.Value.Month.ToString().Contains(month) && x.dNgayTao.Value.Year.ToString().Contains(year) && x.sTenNguoiNhan.Contains(SearchHoaDon));
+
             }
             return model.OrderByDescending(x => x.ID).ToPagedList(page, pageSize);
         }
@@ -65,22 +80,22 @@ namespace Model.DAO
             var model = (from a in db.tbl_HoaDon
                          join b in db.tbl_ChiTietHoaDon on a.ID equals b.IDHoaDon
                          join c in db.tbl_SanPham on b.IDSanPham equals c.ID
-                            orderby a.ID
-                         group new {b.dDonGia,c.dGiaNhap} by new { a.ID } into g
+                            where a.iMaTrangThai == 3
+                         group new {b.dDonGia,c.dGiaNhap, b.iSoLuong, a.dNgayTao} by new { a.ID } into g
                          
                         
                          select new
                          {
                              ID = g.Key.ID,
-                             //dNgayTao = g.Select(e=>e.dNgayTao),
-                             dGiaNhap = g.Sum(l=>l.dGiaNhap),
+                             dNgayTao = g.Select(e=>e.dNgayTao).FirstOrDefault(),
+                             dGiaNhap = g.Sum(l=>l.dGiaNhap * l.iSoLuong),
                              iSoluong = g.Count(),
-                             dDongia = g.Sum(w => w.dDonGia),
-                             //dGiaNhap = c.dGiaNhap
+                             dDongia = g.Sum(w => w.dDonGia * w.iSoLuong),
                          })
                          .AsEnumerable().Select(x => new HoaDonViewModel()
                          {
                             ID = x.ID,
+                            dNgayTao = x.dNgayTao,
                              //dNgayTao.Cast<DateTime>() = x.dNgayTao,
                              iSoLuong = x.iSoluong,
                              dDongia = x.dDongia,
@@ -114,7 +129,8 @@ namespace Model.DAO
                              dDongia = a.dDonGia,
                              sTenSanPham = d.sTenSanPham,
                              sTentrangthai = c.sTenTrangThai,
-                             dGiaNhap = d.dGiaNhap
+                             dGiaNhap = d.dGiaNhap,
+                             sGhiChu = a.sGhiChu
                          })
                          .AsEnumerable().Select(x => new HoaDonViewModel()
                          {
@@ -128,7 +144,8 @@ namespace Model.DAO
                              dDongia = x.dDongia,
                              sTenTrangThai = x.sTentrangthai,
                              sTenSanPham = x.sTenSanPham,
-                             dGiaNhap = x.dGiaNhap
+                             dGiaNhap = x.dGiaNhap,
+                             sGhiChu = x.sGhiChu
                          }) ;
             model.OrderByDescending(x => x.dNgayTao).Skip((page - 1) * pageSize).Take(pageSize);
             return model.ToList();
@@ -141,8 +158,8 @@ namespace Model.DAO
                 var hoadon = db.tbl_HoaDon.Find(entity.ID);
 
                 hoadon.dNgaySua = DateTime.Now;
+                hoadon.iStatus = entity.iStatus;
                 hoadon.iMaTrangThai = entity.iMaTrangThai;
-                
                 db.SaveChanges();
                 return true;
             }
@@ -156,6 +173,10 @@ namespace Model.DAO
         {
             return db.tbl_HoaDon.Find(id);
         }
+        public int CountPendingOrders()
+        {
+            return db.tbl_HoaDon.Count(x => x.iMaTrangThai == 1);
+        }
         public IEnumerable<tbl_HoaDon> getHoaDOnByIDuser(long id)
         {
             IQueryable<tbl_HoaDon> model = db.tbl_HoaDon;
@@ -168,5 +189,8 @@ namespace Model.DAO
             db.SaveChanges();
             return cancel.iMaTrangThai;
         }
+
+
+        
     }
 }

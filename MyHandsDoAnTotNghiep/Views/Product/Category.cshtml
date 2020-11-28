@@ -28,7 +28,7 @@
                                 <span>@item.sTenDanhMuc</span><br />
                                 @if (item.iSoluong > 0)
                                 {
-                                    <div class="product_price">@(item.dGiaKhuyenMai.HasValue?item.dGiaKhuyenMai.Value.ToString("N0"): item.dGiaBan.Value.ToString("N0"))<span>@(item.dGiaKhuyenMai.HasValue?item.dGiaBan.Value.ToString("N0"):" ")</span></div>
+                                    <div class="product_price">@(item.dGiaKhuyenMai.HasValue&&(item.dGiaKhuyenMai.ToString()!="0")? item.dGiaKhuyenMai.Value.ToString("N0"): item.dGiaBan.Value.ToString("N0"))<span>@(item.dGiaKhuyenMai.HasValue&&(item.dGiaKhuyenMai.ToString() != "0") ? item.dGiaBan.Value.ToString("N0") : " ")</span></div>
                                 }
                                 else
                                 {
@@ -48,7 +48,7 @@
         </div>
         <br />
         @*phan trang*@
-        @if (ViewBag.TotalPage > 1)
+        @*@if (ViewBag.TotalPage > 1)
         {
             var pageDisplay = (int)ViewBag.MaxPage;
             int totalPage = (int)ViewBag.TotalPage;
@@ -90,7 +90,7 @@
                 </ul>
             </nav>
 
-        }
+        }*@
 
     </div>
 </div>

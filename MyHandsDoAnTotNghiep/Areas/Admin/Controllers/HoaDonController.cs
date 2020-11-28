@@ -12,13 +12,18 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
     public class HoaDonController : BaseController
     {
         // GET: Admin/HoaDon
-        public ActionResult Index(string SearchHoaDon, int page = 1, int pagesize = 4)
+        [CheckPermission(RoleID = "VIEW_BILL")]
+
+        public ActionResult Index(string SearchHoaDon,string dateOfOrder, int page = 1, int pagesize = 4)
         {
             var dao = new HoaDonDAO();
-            var model = dao.ListAllPaging(SearchHoaDon, page, pagesize);
+            var model = dao.ListAllPaging(SearchHoaDon, dateOfOrder, page, pagesize);
             ViewBag.SearchHoaDon = SearchHoaDon;
+            ViewBag.dateOfOrder = dateOfOrder;
             return View(model);
         }
+        [CheckPermission(RoleID = "VIEW_BILL")]
+
 
         public ActionResult OrderDetails(int id, int page = 1, int pageSize = 10)
         {
@@ -48,6 +53,8 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
             var dao = new TrangThaiHoaDonDAO();
             ViewBag.iMaTrangThai = new SelectList(dao.ListAll(), "ID", "sTenTrangThai", selectedID);
         }
+        [CheckPermission(RoleID = "EDIT_BILL")]
+
 
         public ActionResult Edit(long id)
         {
@@ -59,6 +66,8 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [CheckPermission(RoleID = "EDIT_BILL")]
+
         public ActionResult Edit(tbl_HoaDon model)
         {
             if (ModelState.IsValid)

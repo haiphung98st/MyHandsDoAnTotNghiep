@@ -10,6 +10,7 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
     public class DonNhapHangController : BaseController
     {
         // GET: Admin/DonNhapHang
+        //[CheckPermission("")]
         public ActionResult Index(string SearchSanPham, int page = 1, int pagesize = 5)
         {
             var dao = new HoaDonNhapDAO();

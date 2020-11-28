@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "Đặt hàng theo yêu cầu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //var listProductCaregories = (List<Model.EF.tbl_DanhMucMauSanPham>)ViewBag.customCAT;
+    var listProductCaregories = (List<Model.EF.tbl_DanhMucSanPham>)ViewBag.productcategories;
+
+
+}
+<div style="height:200px"></div>
+    <div class="banner">
+        <div class="container">
+            <div class="row">
+                @foreach (var item in listProductCaregories)
+                {
+                    <div class="col-md-2">
+                        <div class="banner_item align-items-center" style="background-image:url(@item.sHinhAnhDanhMuc)">
+                            <div class="banner_category">
+                                <a href="/san-pham-custom/@item.IDDanhMuc" style="font-size:18px">@item.sTenDanhMuc</a>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+
+

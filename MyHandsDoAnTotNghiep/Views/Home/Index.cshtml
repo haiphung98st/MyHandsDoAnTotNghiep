@@ -22,7 +22,7 @@
                 <div class="main_slider_content">
                     <h6 style="color:white;">Bộ sưu tập 2020</h6>
                     <h1 style="color:white;">Khuyến mãi hấp dẫn cho các sản phẩm mới !!!</h1>
-                    <div class="red_button shop_now_button"><a href="#">shop now</a></div>
+                    <div class="red_button shop_now_button"><a href="/san-pham">shop now</a></div>
                 </div>
             </div>
         </div>
@@ -80,7 +80,7 @@
                                 <h6 class="product_name"><a href="@url">@item.sTenSanPham</a></h6>
                                 @if (item.iSoLuong > 0)
                                 {
-                                    <div class="product_price">@(item.dGiaKhuyenMai.HasValue?item.dGiaKhuyenMai.Value.ToString("N0"): item.dGiaBan.Value.ToString("N0"))<span>@(item.dGiaKhuyenMai.HasValue?item.dGiaBan.Value.ToString("N0"):" ")</span></div>
+                                    <div class="product_price">@(item.dGiaKhuyenMai.HasValue&&(item.dGiaKhuyenMai.ToString()!="0")? item.dGiaKhuyenMai.Value.ToString("N0"): item.dGiaBan.Value.ToString("N0"))<span>@(item.dGiaKhuyenMai.HasValue&&(item.dGiaKhuyenMai.ToString() != "0") ? item.dGiaBan.Value.ToString("N0") : " ")</span></div>
                                 }
                                 else
                                 {
@@ -173,7 +173,14 @@
                                         <div class="favorite favorite_left"></div>
                                         <div class="product_info">
                                             <h6 class="product_name"><a href="@url">@item.sTenSanPham</a></h6>
-                                            <div class="product_price">@(item.dGiaKhuyenMai.HasValue?item.dGiaKhuyenMai.Value.ToString("N0"):"Liên hệ")<span>@(item.dGiaBan.HasValue?item.dGiaBan.Value.ToString("N0"):" ")</span></div>
+                                            @if (item.iSoLuong > 0)
+                                            {
+                                                <div class="product_price">@(item.dGiaKhuyenMai.HasValue&&(item.dGiaKhuyenMai.ToString()!="0")? item.dGiaKhuyenMai.Value.ToString("N0"): item.dGiaBan.Value.ToString("N0"))<span>@(item.dGiaKhuyenMai.HasValue&&(item.dGiaKhuyenMai.ToString() != "0") ? item.dGiaBan.Value.ToString("N0") : " ")</span></div>
+                                            }
+                                            else
+                                            {
+                                                <div class="product_price">Hết hàng</div>
+                                            }
                                         </div>
                                     </div>
                                 </div>

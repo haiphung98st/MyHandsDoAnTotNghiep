@@ -1,0 +1,115 @@
+﻿@model List<Model.ViewModel.OptionCustomizeViewModel>
+@{
+    ViewBag.Title = "Custom";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var listproduct = (List<Model.EF.tbl_SanPham>)ViewBag.product;
+    var listTenOption = (List<Model.ViewModel.OptionCustomizeViewModel>)ViewBag.TenDanhMuc;
+
+}
+@section jsFooter {
+    <script>
+        $('#customize').hide();
+        $('input[name="rdo_mau"]').off('click').on('click', function () {
+            $('#customize').show();
+            var idsp = $(this).val();
+            $('#btnDathang').off('click').on('click', function () {
+                var radioValues = '';
+
+                $('input[type="radio"]:checked').each(function () {
+                    radioValues += $(this).attr('value') + '-';
+                });
+
+                //alert(radioValues);
+                window.location.href = "/them-vao-gio?IDSanPham=" + idsp + "&SoLuong=1"+"&sGhiChu=" + radioValues;
+            });
+        });
+
+    </script>
+    <style>
+        .customize {
+            width: 50%;
+            height: auto;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: column;
+        }
+
+            .customize .title {
+                width: 100%;
+                height: 50px;
+            }
+
+            .customize .wrap_nameOption {
+                width: 30%;
+                height: auto;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-direction: column;
+            }
+
+            .customize .wrap_valueOption {
+                width: 70%;
+                height: auto;
+            }
+
+        .wrap_nameOption .lbl_option {
+            width: 100%;
+            height: 50px;
+        }
+
+        .wrap_selectOption {
+            width: 100%;
+            height: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+}
+<div class="d-flex justify-content-center" style="margin: 200px 200px 0 200px">
+    <h3>Chọn mẫu</h3>
+    <br />
+</div>
+<div class="d-flex justify-content-center" style="margin: 0 200px 0 200px">
+    @foreach (var item in listproduct)
+    {
+        <br />
+        <div class="">
+            <div class="product_image" style="padding: 30px; margin: 10px">
+                <img src="@item.sImages" /><br />
+                <p>@item.sTenSanPham</p>
+                <div class="d-flex justify-content-center">
+                    <input type="radio" value="@item.ID" name="rdo_mau" />
+
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+<div id="customize" class="customize">
+    <div class="title"><h4>Chọn thông số</h4></div>
+    <div class="wrap_selectOption">
+        <div class="wrap_nameOption">
+            @foreach (var itm in listTenOption)
+            {
+                <h5 class="lbl_option">@itm.sTenOption</h5>
+            }
+        </div>
+        <div class="wrap_valueOption">
+            @foreach (var item in Model)
+            {
+                <div class="@item.IDoption">
+                    <input type="radio" name="@item.IDoption" id="@item.IDoption" value="@item.sValueOption">
+                    @item.sValueOption
+                </div>
+            }
+        </div>
+    </div>
+    <button id="btnDathang" value="Dat hang" class="btn btn-primary"></button>
+
+</div>
+

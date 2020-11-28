@@ -18,20 +18,30 @@
                     @foreach (var item in Model)
                     {
                         var url = "/chi-tiet/" + item.sTenSanPhamMeta + "-" + item.ID;
-                        <div class="product-item men">
-                            <div class="product discount product_filter">
-                                <div class="product_image">
-                                    <img src="@item.sImages" alt="@item.sTenSanPham" />
-                                </div>
-                                <div class="favorite favorite_left"></div>
-                                <div class="product_info">
-                                    <h6 class="product_name"><a href="@url">@item.sTenSanPham</a></h6>
-                                    <span>@item.sTenDanhMuc</span><br />
-                                    <div class="product_price">@(item.dGiaKhuyenMai.HasValue?item.dGiaKhuyenMai.Value.ToString("N0"):"Liên hệ")<span>@(item.dGiaBan.HasValue?item.dGiaBan.Value.ToString("N0"):" ")</span></div>
-                                </div>
+                    <div class="product-item men">
+                        <div class="product discount product_filter">
+                            <div class="product_image">
+                                <img src="@item.sImages" alt="@item.sTenSanPham" />
                             </div>
-                            <div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>
+                            <div class="favorite favorite_left"></div>
+                            <div class="product_info">
+                                <h6 class="product_name"><a href="@url">@item.sTenSanPham</a></h6>
+                                <span>@item.sTenDanhMuc</span><br />
+                                @if (item.iSoluong > 0)
+                                {
+                                    <div class="product_price">@(item.dGiaKhuyenMai.HasValue&&(item.dGiaKhuyenMai.ToString()!="0")? item.dGiaKhuyenMai.Value.ToString("N0"): item.dGiaBan.Value.ToString("N0"))<span>@(item.dGiaKhuyenMai.HasValue&&(item.dGiaKhuyenMai.ToString() != "0") ? item.dGiaBan.Value.ToString("N0") : " ")</span></div>
+                                }
+                                else
+                                {
+                                    <div class="product_price">Hết hàng</div>
+                                }
+                            </div>
                         </div>
+                        @if (item.iSoluong > 0)
+                        {
+                            <div class="red_button add_to_cart_button"><a href="/them-vao-gio?IDSanPham=@item.ID&SoLuong=1">Thêm vào giỏ hàng</a></div>
+                        }
+                    </div>
                     }
 
                 </div>
@@ -81,9 +91,6 @@
             </nav>
 
         }
-        else
-        {
-            <span>Không có bản ghi nào</span>
-        }
+        
     </div>
 </div>

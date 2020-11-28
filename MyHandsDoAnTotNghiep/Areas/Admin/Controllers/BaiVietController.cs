@@ -12,6 +12,7 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
     public class BaiVietController : BaseController
     {
         // GET: Admin/BaiViet
+        [CheckPermission(RoleID = "VIEW_CONTENT")]
         public ActionResult Index(string SearchBaiViet, int page = 1, int pagesize = 4)
         {
             var dao = new BaiVietDAO();
@@ -20,11 +21,14 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
             return View(model);
         }
         [HttpGet]
+        [CheckPermission(RoleID = "ADD_CONTENT")]
+
         public ActionResult Create()
         {
             setViewBag();
             return View();
         }
+        [CheckPermission(RoleID = "EDIT_CONTENT")]
 
         public ActionResult Edit(long id)
         {
@@ -36,6 +40,8 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
         }
 
         [HttpPost, ValidateInput(false)]
+        [CheckPermission(RoleID = "EDIT_CONTENT")]
+
         public ActionResult Edit(tbl_BaiViet model, FormCollection formcollection)
         {
             if (ModelState.IsValid)
@@ -56,6 +62,8 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
             return View();
         }
         [HttpPost, ValidateInput(false)]
+        [CheckPermission(RoleID = "ADD_CONTENT")]
+
         public ActionResult Create(tbl_BaiViet model)
         {
             if (ModelState.IsValid)
@@ -73,12 +81,16 @@ namespace MyHandsDoAnTotNghiep.Areas.Admin.Controllers
             var dao = new DanhMucBaiVietDAO();
             ViewBag.IDChuDe = new SelectList(dao.ListChude(), "IDChuDe", "sTenChuDe", selectedID);
         }
+        [CheckPermission(RoleID = "DELETE_CONTENT")]
+
         public ActionResult Delete(int id)
         {
             new BaiVietDAO().Delete(id);
             return RedirectToAction("Index");
         }
         [HttpPost]
+        [CheckPermission(RoleID = "EDIT_CONTENT")]
+
 
         public JsonResult ChangeStatus(long id)
         {
